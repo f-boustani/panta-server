@@ -1,14 +1,13 @@
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseBadRequest
 from django.shortcuts import render_to_response
 from django.template import Context
 import datetime
 
-from myapp.models import Login,Profile
+from MyApp.models import Login,Profile
 
 
 def register(request):
-    
-    if request.method == "POST":
+	if request.method == "POST":
 		print '#########################'
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		password=unicodedata.normalize('NFKD', request.POST['password']).encode('utf-8','ignore');
@@ -33,13 +32,12 @@ def register(request):
 		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
 		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
 		return response
-
 	else:
 		return HttpResponseBadRequest()
 
 def login(request):
      
-     if request.method == "POST":
+	if request.method == "POST":
 		print '#########################'
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		password=unicodedata.normalize('NFKD', request.POST['password']).encode('utf-8','ignore');
