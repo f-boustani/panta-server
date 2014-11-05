@@ -11,6 +11,7 @@ def register(request):
 		print '#########################'
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		password=unicodedata.normalize('NFKD', request.POST['password']).encode('utf-8','ignore');
+		name=unicodedata.normalize('NFKD', request.POST['name']).encode('utf-8','ignore');
 		if(Login.objects.filter(username__iexact=username).exists()):
 			results ={}
 			results["successful"]="false"
@@ -23,9 +24,24 @@ def register(request):
 			return response	
 		salt = bcrypt.gensalt()
 		hash = bcrypt.hashpw(password, salt)
-		newUser=UserPass(username=username,password=hash)
+		newUser=Login(username=username,password=hash,name=name)
 		newUser.save()
+		results ={}
 		results["successful"]="true"
+		print username
+
+		results["profile"]=[ob.as_json() for ob in Profile.objects.filter(username__iexact=username)]
+		lst=[]
+		for pro in Profile.objects.filter(username__iexact=username):
+			lst.append(Projects.objects.get(projectID__iexact=pro.projectID).as_json())
+		
+		results["projects"]=lst	
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		return response
+	
 		print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
 		response['Access-Control-Allow-Origin'] = "*"
@@ -49,6 +65,13 @@ def login(request):
 			if(passwd==bcrypt.hashpw(password,passwd)):
 				results ={}
 				results["successful"]="true"
+				results["profile"]=[ob.as_json() for ob in Profile.objects.filter(username__iexact=username)]
+				lst=[]
+				for pro in Profile.objects.filter(username__iexact=username):
+					lst.append(Projects.objects.get(projectID__iexact=pro.projectID).as_json())
+		
+				results["projects"]=lst	
+
 				print json.dumps(results)
 				response = HttpResponse(json.dumps(results), content_type="application/json")
 				response['Access-Control-Allow-Origin'] = "*"
@@ -81,6 +104,7 @@ def view_profile(request):
 		for pro in Profile.objects.filter(username__iexact=username):
 			lst.append(Projects.objects.get(projectID__iexact=pro.projectID).as_json())
 			
+		results["projects"]=lst
 		response = HttpResponse(json.dumps(results), content_type="application/json")
 		response['Access-Control-Allow-Origin'] = "*"
 		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"

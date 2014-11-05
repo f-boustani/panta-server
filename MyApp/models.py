@@ -16,12 +16,11 @@ class Login(models.Model):
 
     username = models.EmailField()
     password = models.CharField(max_length=100)
-
+    name = models.CharField(max_length=50)
     
 
 class Profile(models.Model):
     username = models.ForeignKey(Login)
-    name = models.CharField(max_length=50)
     projectID = models.IntegerField(max_length=15,null=True)
 
     class Meta:
