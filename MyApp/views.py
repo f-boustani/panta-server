@@ -2,16 +2,16 @@ from django.http import HttpResponse,HttpResponseBadRequest
 from django.shortcuts import render_to_response
 from django.template import Context
 import datetime
-
+import json
 from MyApp.models import Login,Profile
 
 
 def register(request):
 	if request.method == "POST":
-		print '#########################'
-		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
-		password=unicodedata.normalize('NFKD', request.POST['password']).encode('utf-8','ignore');
-		name=unicodedata.normalize('NFKD', request.POST['name']).encode('utf-8','ignore');
+		print '#register- post mode'
+		#username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
+		#password=unicodedata.normalize('NFKD', request.POST['password']).encode('utf-8','ignore');
+		#name=unicodedata.normalize('NFKD', request.POST['name']).encode('utf-8','ignore');
 		if(Login.objects.filter(username__iexact=username).exists()):
 			results ={}
 			results["successful"]="false"
@@ -22,6 +22,7 @@ def register(request):
 			response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
 			response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
 			return response	
+
 		salt = bcrypt.gensalt()
 		hash = bcrypt.hashpw(password, salt)
 		newUser=Login(username=username,password=hash,name=name)
@@ -42,11 +43,28 @@ def register(request):
 		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
 		return response
 	
+		
+	elif request.method == "OPTIONS":
+		print '##############OPTIONS###########'
+		results ={}
+		results["mode"]="option mode"
 		print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
 		response['Access-Control-Allow-Origin'] = "*"
 		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
 		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+	elif request.method == "GET":
+		print "GET MODE"
+		results ={}
+		results["mode"]="get mode"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
 		return response
 	else:
 		return HttpResponseBadRequest()
