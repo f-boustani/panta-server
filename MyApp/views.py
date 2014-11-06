@@ -4,7 +4,7 @@ from django.template import Context
 import datetime
 import json
 import unicodedata
-from feelOver.models import Login,Profile
+from MyApp.models import Login,Profile
 
 
 def register(request):
@@ -33,18 +33,15 @@ def register(request):
 		print username
 
 		
-		print "###########################################"
-		if(Profile.objects.filter(username__iexact=username).exists()):
-			for ob in Profile.objects.filter(username__iexact=username):
-				print ob.projectID
-		else:
-			print "NOT EXIST"
-		#results["profile"]=[ob.as_json() ]
-		#lst=[]
-		#for pro in Profile.objects.filter(username__iexact=username):
-		#	lst.append(Projects.objects.get(projectID__iexact=pro.projectID).as_json())
+		lst=[]
+		for ob in Profile.objects.filter(username__iexact=username):
+			lst.append(Projects.objects.get(projectID__iexact=pro.projectID).as_json())
+	
+		results["projects"]=lst	
+			
 		
-		#results["projects"]=lst	
+		#results["profile"]=[ob.as_json() ]
+		
 		response = HttpResponse(json.dumps(results), content_type="application/json")
 		response['Access-Control-Allow-Origin'] = "*"
 		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
@@ -80,7 +77,7 @@ def register(request):
 def login(request):
      
 	if request.method == "POST":
-		print '#########################'
+		print 'POST-login'
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		password=unicodedata.normalize('NFKD', request.POST['password']).encode('utf-8','ignore');
 		#salt = bcrypt.gensalt()
@@ -121,7 +118,7 @@ def login(request):
 def view_profile(request):
 
 	if request.method == "POST":
-		print '#############'
+		print 'POST-profile'
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		print username
 		results ={}
