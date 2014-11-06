@@ -3,15 +3,16 @@ from django.shortcuts import render_to_response
 from django.template import Context
 import datetime
 import json
-from MyApp.models import Login,Profile
+import unicodedata
+from feelOver.models import Login,Profile
 
 
 def register(request):
 	if request.method == "POST":
 		print '#register- post mode'
-		#username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
-		#password=unicodedata.normalize('NFKD', request.POST['password']).encode('utf-8','ignore');
-		#name=unicodedata.normalize('NFKD', request.POST['name']).encode('utf-8','ignore');
+		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
+		password=unicodedata.normalize('NFKD', request.POST['password']).encode('utf-8','ignore');
+		name=unicodedata.normalize('NFKD', request.POST['name']).encode('utf-8','ignore');
 		if(Login.objects.filter(username__iexact=username).exists()):
 			results ={}
 			results["successful"]="false"
@@ -23,20 +24,27 @@ def register(request):
 			response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
 			return response	
 
-		salt = bcrypt.gensalt()
-		hash = bcrypt.hashpw(password, salt)
-		newUser=Login(username=username,password=hash,name=name)
+		#salt = bcrypt.gensalt()
+		#hash = bcrypt.hashpw(password, salt)
+		newUser=Login(username=username,password=password,name=name)
 		newUser.save()
 		results ={}
 		results["successful"]="true"
 		print username
 
-		results["profile"]=[ob.as_json() for ob in Profile.objects.filter(username__iexact=username)]
-		lst=[]
-		for pro in Profile.objects.filter(username__iexact=username):
-			lst.append(Projects.objects.get(projectID__iexact=pro.projectID).as_json())
 		
-		results["projects"]=lst	
+		print "###########################################"
+		if(Profile.objects.filter(username__iexact=username).exists()):
+			for ob in Profile.objects.filter(username__iexact=username):
+				print ob.projectID
+		else:
+			print "NOT EXIST"
+		#results["profile"]=[ob.as_json() ]
+		#lst=[]
+		#for pro in Profile.objects.filter(username__iexact=username):
+		#	lst.append(Projects.objects.get(projectID__iexact=pro.projectID).as_json())
+		
+		#results["projects"]=lst	
 		response = HttpResponse(json.dumps(results), content_type="application/json")
 		response['Access-Control-Allow-Origin'] = "*"
 		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
@@ -75,12 +83,12 @@ def login(request):
 		print '#########################'
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		password=unicodedata.normalize('NFKD', request.POST['password']).encode('utf-8','ignore');
-		salt = bcrypt.gensalt()
-		hash = bcrypt.hashpw(password, salt)
+		#salt = bcrypt.gensalt()
+		#hash = bcrypt.hashpw(password, salt)
 		
 		if(Login.objects.filter(username__iexact=username).exists()):
 			passwd=Login.objects.get(username__iexact=username).password.encode('utf-8','ignore');
-			if(passwd==bcrypt.hashpw(password,passwd)):
+			if(passwd==password):
 				results ={}
 				results["successful"]="true"
 				results["profile"]=[ob.as_json() for ob in Profile.objects.filter(username__iexact=username)]

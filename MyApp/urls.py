@@ -8,5 +8,5 @@ urlpatterns = patterns('',
     (r'^register/$', register),
     (r'^login/$', login),
     (r'^view_profile/$', view_profile),
-    url(r'^admin/', include(admin.site.urls)),
+#    url(r'^admin/', include(admin.site.urls)),
 )

@@ -20,7 +20,7 @@ class Login(models.Model):
     
 
 class Profile(models.Model):
-    username = models.ForeignKey(Login)
+    username = models.EmailField()
     projectID = models.IntegerField(max_length=15,null=True)
 
     class Meta:
@@ -29,11 +29,7 @@ class Profile(models.Model):
     def as_json(self):
             return dict(
                 username=self.username,
-                name=self.name,
                 projectID=self.projectID)
-
-
-
 class Projects(models.Model):
     projectID = models.IntegerField(max_length=15)
     projectName = models.CharField(max_length=50)
@@ -48,12 +44,10 @@ class Projects(models.Model):
                 projectID=self.projectID,
                 project_info=self.project_info,
                 progress=self.progress)
-
-
 class Task(models.Model):
     taskID = models.IntegerField(max_length=15)
     task_info = models.CharField(max_length=5000)
-    username = models.ForeignKey(Profile)
+    username = models.EmailField()
     deadline = models.DateField(null=True)
     status = models.CharField(max_length=1, choices=task_CHOICES)
 
@@ -70,8 +64,8 @@ class Task(models.Model):
 
 
 class User_father(models.Model):
-    username = models.ForeignKey(Profile)
-    projectID = models.ForeignKey(Projects)
+    username = models.EmailField()
+    projectID = models.IntegerField(max_length=15)
     father = models.CharField(max_length=50)
     semat = models.CharField(max_length=50)
     
