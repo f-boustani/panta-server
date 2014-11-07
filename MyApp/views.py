@@ -4,7 +4,7 @@ from django.template import Context
 import datetime
 import json
 import unicodedata
-from MyApp.models import Login,Profile
+from MyApp.models import *
 
 
 def register(request):
