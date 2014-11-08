@@ -30,6 +30,8 @@ def register(request):
 		newUser.save()
 		results ={}
 		results["successful"]="true"
+		results["user_info"]= Login.objects.get(username__iexact=username).as_json()	
+
 		print username
 
 		
@@ -93,8 +95,9 @@ def login(request):
 				for pro in Profile.objects.filter(username__iexact=username):
 					lst.append(Projects.objects.get(projectID__iexact=pro.projectID).as_json())
 		
-				results["projects"]=lst	
-
+				results["projects"]=lst
+				results["user_info"]=Login.objects.get(username__iexact=username).as_json()	
+				
 				print json.dumps(results)
 				response = HttpResponse(json.dumps(results), content_type="application/json")
 				response['Access-Control-Allow-Origin'] = "*"
