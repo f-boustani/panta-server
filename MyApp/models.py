@@ -17,6 +17,12 @@ class Login(models.Model):
     username = models.EmailField()
     password = models.CharField(max_length=100)
     name = models.CharField(max_length=50)
+
+    def as_json(self):
+            return dict(
+                username=self.username,
+                password=self.password,
+                name=self.name)
     
 
 class Profile(models.Model):
