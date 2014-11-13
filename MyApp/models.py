@@ -7,9 +7,9 @@ class Category(models.Model):
         return self.name
 	
 task_CHOICES =(
-	('1','To Do'),
-	('2','Doing'),
-        ('3','Done'),
+	('1','Doing'),
+	('2','Done by user'),
+        ('3','accept by manager'),
 )
 
 class Login(models.Model):
@@ -27,7 +27,7 @@ class Login(models.Model):
 
 class Profile(models.Model):
     username = models.EmailField()
-    projectID = models.IntegerField(max_length=15,null=True)
+    projectID = models.IntegerField(max_length=15)
 
     class Meta:
         unique_together = ('username','projectID')
@@ -39,21 +39,25 @@ class Profile(models.Model):
 class Projects(models.Model):
     projectID = models.IntegerField(max_length=15)
     projectName = models.CharField(max_length=50)
-    manager = models.CharField(max_length=50)
+    managerName = models.CharField(max_length=50)
+    managerUser = models.EmailField()
     project_info = models.CharField(max_length=5000)
     progress = models.IntegerField(max_length=15)
 
     def as_json(self):
             return dict(
-                manager=self.manager,
+                managerName=self.managerName,
+                managerUser=self.managerUser,
                 projectName=self.projectName,
                 projectID=self.projectID,
                 project_info=self.project_info,
                 progress=self.progress)
 class Task(models.Model):
     taskID = models.IntegerField(max_length=15)
+    taskName = models.CharField(max_length=100) 
     task_info = models.CharField(max_length=5000)
     username = models.EmailField()
+    projectID = models.IntegerField(max_length=15)
     deadline = models.DateField(null=True)
     status = models.CharField(max_length=1, choices=task_CHOICES)
 
@@ -63,24 +67,28 @@ class Task(models.Model):
     def as_json(self):
             return dict(
                 taskID=self.taskID,
+                taskName=self.taskName,
                 task_info=self.task_info,
                 username=self.username,
                 deadline=self.deadline,
+                projectID=self.projectID,
                 status=self.status)
 
 
 class User_father(models.Model):
     username = models.EmailField()
     projectID = models.IntegerField(max_length=15)
-    father = models.CharField(max_length=50)
-    semat = models.CharField(max_length=50)
+    father = models.EmailField()
+    position = models.CharField(max_length=50)
+    deadline = models.DateField(null=True)
     
     def as_json(self):
             return dict(
                 projectID=self.projectID,
                 father=self.father,
                 username=self.username,
-                semat=self.semat)
+                position=self.position,
+                deadline=self.deadline)
 
 
 
