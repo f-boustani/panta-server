@@ -243,6 +243,7 @@ def project_tasks(request):
 		results["successful"]="true"
 		lst=[]
 		for task in Task.objects.filter(projectID__iexact=projectID):
+			task.deadline = str(task.deadline)
 			lst.append(task.as_json())
 		
 		results["project_tasks"]=lst
