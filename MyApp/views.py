@@ -331,7 +331,7 @@ def taskInfo(request):
 
 def addMember(request):
 
-		if request.method == "POST":
+	if request.method == "POST":
 		print 'POST-addMember'
 		projectID=unicodedata.normalize('NFKD', request.POST['projectID']).encode('utf-8','ignore');
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
