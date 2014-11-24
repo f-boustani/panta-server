@@ -335,19 +335,32 @@ def addMember(request):
 		print 'POST-addMember'
 		projectID=unicodedata.normalize('NFKD', request.POST['projectID']).encode('utf-8','ignore');
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
-	
-		results ={}
-		results["successful"]="true"
-		newUser=Profile(username=username,projectID=projectID)
-		newUser.save()
-			
-		print json.dumps(results)
-		response = HttpResponse(json.dumps(results), content_type="application/json")
-		response['Access-Control-Allow-Origin'] = "*"
-		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
-		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
-		return response
 		
+		if(Profile.objects.filter(username__iexact=username).exists() and Profile.objects.filter(projectID__iexact=projectID) ):
+			results ={}
+			results["successful"]="false"
+			results["error"]="this username is already added"
+			print json.dumps(results)
+			response = HttpResponse(json.dumps(results), content_type="application/json")
+			response['Access-Control-Allow-Origin'] = "*"
+			response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+			response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+			return response
+
+		if(Login.objects.filter(username__iexact=username).exists()):
+
+			results ={}
+			results["successful"]="true"
+			newUser=Profile(username=username,projectID=projectID)
+			newUser.save()
+				
+			print json.dumps(results)
+			response = HttpResponse(json.dumps(results), content_type="application/json")
+			response['Access-Control-Allow-Origin'] = "*"
+			response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+			response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+			return response
+			
 	elif request.method == "OPTIONS":
 		print '##############OPTIONS###########'
 		results ={}
