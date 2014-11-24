@@ -13,6 +13,7 @@ def register(request):
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		password=unicodedata.normalize('NFKD', request.POST['password']).encode('utf-8','ignore');
 		name=unicodedata.normalize('NFKD', request.POST['name']).encode('utf-8','ignore');
+		print name
 		if(Login.objects.filter(username__iexact=username).exists()):
 			results ={}
 			results["successful"]="false"
@@ -77,7 +78,7 @@ def login(request):
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		password=unicodedata.normalize('NFKD', request.POST['password']).encode('utf-8','ignore');
 		#salt = bcrypt.gensalt()
-		#hash = bcrypt.hashpw(password, salt)
+		#hashpw(password, salt)
 		
 		if(Login.objects.filter(username__iexact=username).exists()):
 			passwd=Login.objects.get(username__iexact=username).password.encode('utf-8','ignore');
@@ -141,6 +142,8 @@ def projectInfo(request):
 
 		results ={}
 		results["successful"]="true"
+		results["projectInfo"]=(Projects.objects.get(projectID__iexact=projectID).as_json())
+
 		print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
 		response['Access-Control-Allow-Origin'] = "*"
@@ -190,7 +193,6 @@ def project_users(request):
 			lst.append(Login.objects.get(username__iexact=pro.username).as_json())
 		
 		results["project_users"]=lst
-			
 		print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
 		response['Access-Control-Allow-Origin'] = "*"
