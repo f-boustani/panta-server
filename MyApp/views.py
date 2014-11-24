@@ -49,6 +49,7 @@ def register(request):
 	elif request.method == "OPTIONS":
 		print '##############OPTIONS###########'
 		results ={}
+		results["successful"]="false"
 		results["mode"]="option mode-register"
 		print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
@@ -60,6 +61,7 @@ def register(request):
 	elif request.method == "GET":
 		print "GET MODE-register"
 		results ={}
+		results["successful"]="false"
 		results["mode"]="get mode"
 		print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
@@ -154,6 +156,7 @@ def projectInfo(request):
 	elif request.method == "OPTIONS":
 		print '##############OPTIONS###########'
 		results ={}
+		results["successful"]="false"
 		results["mode"]="option mode-projectInfo"
 		print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
@@ -165,6 +168,7 @@ def projectInfo(request):
 	elif request.method == "GET":
 		print "GET MODE"
 		results ={}
+		results["successful"]="false"
 		results["mode"]="get mode-projectInfo"
 		print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
@@ -203,6 +207,7 @@ def project_users(request):
 	elif request.method == "OPTIONS":
 		print '##############OPTIONS###########'
 		results ={}
+		results["successful"]="false"
 		results["mode"]="option mode-project_user"
 		print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
@@ -214,6 +219,7 @@ def project_users(request):
 	elif request.method == "GET":
 		print "GET MODE"
 		results ={}
+		results["successful"]="false"
 		results["mode"]="get mode-project_user"
 		print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
@@ -251,6 +257,7 @@ def project_tasks(request):
 	elif request.method == "OPTIONS":
 		print '##############OPTIONS###########'
 		results ={}
+		results["successful"]="false"
 		results["mode"]="option mode- project_tasks"
 		print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
@@ -262,6 +269,7 @@ def project_tasks(request):
 	elif request.method == "GET":
 		print "GET MODE"
 		results ={}
+		results["successful"]="false"
 		results["mode"]="get mode - project_tasks"
 		print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
@@ -294,6 +302,7 @@ def taskInfo(request):
 	elif request.method == "OPTIONS":
 		print '##############OPTIONS###########'
 		results ={}
+		results["successful"]="false"
 		results["mode"]="option mode - taskInfo"
 		print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
@@ -305,6 +314,7 @@ def taskInfo(request):
 	elif request.method == "GET":
 		print "GET MODE"
 		results ={}
+		results["successful"]="false"
 		results["mode"]="get mode - taskInfo"
 		print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
@@ -316,3 +326,53 @@ def taskInfo(request):
 
 	else:
 		return HttpResponseBadRequest()
+
+
+
+def addMember(request):
+
+		if request.method == "POST":
+		print 'POST-addMember'
+		projectID=unicodedata.normalize('NFKD', request.POST['projectID']).encode('utf-8','ignore');
+		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
+	
+		results ={}
+		results["successful"]="true"
+		newUser=Profile(username=username,projectID=projectID)
+		newUser.save()
+			
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		return response
+		
+	elif request.method == "OPTIONS":
+		print '##############OPTIONS###########'
+		results ={}
+		results["successful"]="false"
+		results["mode"]="option mode- addMemeber"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+	elif request.method == "GET":
+		print "GET MODE"
+		results ={}
+		results["successful"]="false"
+		results["mode"]="get mode - addMember"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+
+	else:
+		return HttpResponseBadRequest()
+
