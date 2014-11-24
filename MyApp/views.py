@@ -339,7 +339,18 @@ def addMember(request):
 		if(Profile.objects.filter(username__iexact=username).exists() and Profile.objects.filter(projectID__iexact=projectID) ):
 			results ={}
 			results["successful"]="false"
-			results["error"]="this username is already added"
+			results["error"]="1"
+			print json.dumps(results)
+			response = HttpResponse(json.dumps(results), content_type="application/json")
+			response['Access-Control-Allow-Origin'] = "*"
+			response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+			response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+			return response
+
+		if(Login.objects.filter(username__iexact=username).notexist()):
+			results ={}
+			results["successful"]="false"
+			results["error"]="2"
 			print json.dumps(results)
 			response = HttpResponse(json.dumps(results), content_type="application/json")
 			response['Access-Control-Allow-Origin'] = "*"
