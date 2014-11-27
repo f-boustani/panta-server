@@ -420,7 +420,7 @@ def addProject(request):
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		projectName=unicodedata.normalize('NFKD', request.POST['projectName']).encode('utf-8','ignore');
 		project_info=unicodedata.normalize('NFKD', request.POST['project_info']).encode('utf-8','ignore');
-		pDeadline=unicodedata.normalize('NFKD', request.POST['pDeadline']).encode('utf-8','ignore');
+		#pDeadline=unicodedata.normalize('NFKD', request.POST['pDeadline']).encode('utf-8','ignore');
 
 		managerName=Login.objects.get(username__iexact=username).name
 
@@ -428,7 +428,7 @@ def addProject(request):
 		results ={}
 		results["successful"]="true"
 
-		newProject=Projects(projectID=project_counter , projectName=projectName, managerUser=username, managerName=managerName, project_info=project_info,progress=0, pDeadline=pDeadline)
+		newProject=Projects(projectID=project_counter , projectName=projectName, managerUser=username, managerName=managerName, project_info=project_info,progress=0)
 		newProject.save()
 
 		newProfile=Profile(username=username , projectID= project_counter)

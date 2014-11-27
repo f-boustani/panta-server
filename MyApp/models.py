@@ -43,7 +43,7 @@ class Projects(models.Model):
     managerUser = models.EmailField()
     project_info = models.CharField(max_length=5000)
     progress = models.IntegerField(max_length=15)
-    pDeadline = models.DateField()
+    #pDeadline = models.DateField()
 
     def as_json(self):
             return dict(
@@ -52,8 +52,8 @@ class Projects(models.Model):
                 projectName=self.projectName,
                 projectID=self.projectID,
                 project_info=self.project_info,
-                progress=self.progress,
-            	pDeadline=self.pDeadline)
+                progress=self.progress
+            	#pDeadline=self.pDeadline)
 
 
 class Task(models.Model):
