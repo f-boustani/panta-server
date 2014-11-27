@@ -148,6 +148,8 @@ def projectInfo(request):
 
 		results ={}
 		results["successful"]="true"
+		Projects.objects.get(projectID__iexact=projectID).pDeadline=str(Projects.objects.get(projectID__iexact=projectID).pDeadline)
+
 		results["projectInfo"]=(Projects.objects.get(projectID__iexact=projectID).as_json())
 
 		print json.dumps(results)
