@@ -93,7 +93,9 @@ def login(request):
 				results["successful"]="true"
 				lst=[]
 				for pro in Profile.objects.filter(username__iexact=username):
-					lst.append(Projects.objects.get(projectID__iexact=pro.projectID).as_json())
+					project=Projects.objects.get(projectID__iexact=pro.projectID)
+					project.pDeadline=str(project.pDeadline)
+					lst.append(project.as_json())
 		
 				results["projects"]=lst
 				results["user_info"]=Login.objects.get(username__iexact=username).as_json()	
