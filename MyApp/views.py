@@ -415,6 +415,8 @@ def addMember(request):
 
 def addProject(request):
 
+	global project_counter
+
 	if request.method == "POST":
 		print 'POST-addProject'
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
@@ -479,6 +481,8 @@ def addProject(request):
 	
 
 def addTask(request):
+
+	global task_counter
 
 	if request.method == "POST":
 		print 'POST-addTask'
