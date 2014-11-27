@@ -504,7 +504,7 @@ def addTask(request):
 		day=unicodedata.normalize('NFKD', request.POST['day']).encode('utf-8','ignore');
 		
 		deadline= datetime.date(int(year),int(month),int(day))
-
+		print Login.objects.filter(username__iexact=username).exists()
 		if not(Login.objects.filter(username__iexact=username).exists()):
 			print "username doesnt exist"
 			results ={}
