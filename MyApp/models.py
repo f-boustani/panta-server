@@ -52,7 +52,7 @@ class Projects(models.Model):
                 projectName=self.projectName,
                 projectID=self.projectID,
                 project_info=self.project_info,
-                progress=self.progress
+                progress=self.progress)
             	#pDeadline=self.pDeadline)
 
 
