@@ -490,7 +490,11 @@ def addTask(request):
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		taskName=unicodedata.normalize('NFKD', request.POST['projectName']).encode('utf-8','ignore');
 		task_info=unicodedata.normalize('NFKD', request.POST['project_info']).encode('utf-8','ignore');
-		deadline=unicodedata.normalize('NFKD', request.POST['deadline']).encode('utf-8','ignore');
+		year=unicodedata.normalize('NFKD', request.POST['year']).encode('utf-8','ignore');
+		month=unicodedata.normalize('NFKD', request.POST['month']).encode('utf-8','ignore');
+		day=unicodedata.normalize('NFKD', request.POST['day']).encode('utf-8','ignore');
+		
+		deadline= datetime.date(int(year),int(month),int(day))
 
 		task_counter += 1
 		results ={}
