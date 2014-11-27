@@ -7,6 +7,10 @@ import unicodedata
 from MyApp.models import *
 
 
+project_counter=1
+task_counter=2
+
+
 def register(request):
 	if request.method == "POST":
 		print 'register- post mode'
@@ -291,6 +295,7 @@ def taskInfo(request):
 
 		results ={}
 		results["successful"]="true"
+		Task.objects.get(taskID__iexact=taskID).deadline=str(Task.objects.get(taskID__iexact=taskID).deadline)
 		results["taskInfo"]=(Task.objects.get(taskID__iexact=taskID).as_json())
 			
 		print json.dumps(results)
@@ -406,3 +411,120 @@ def addMember(request):
 	else:
 		return HttpResponseBadRequest()
 
+
+
+def addProject(request):
+
+	if request.method == "POST":
+		print 'POST-addProject'
+		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
+		projectName=unicodedata.normalize('NFKD', request.POST['projectName']).encode('utf-8','ignore');
+		project_info=unicodedata.normalize('NFKD', request.POST['project_info']).encode('utf-8','ignore');
+		pDeadline=unicodedata.normalize('NFKD', request.POST['pDeadline']).encode('utf-8','ignore');
+
+		managerName=Login.objects.get(username__iexact=username).name
+
+		project_counter += 1
+		results ={}
+		results["successful"]="true"
+
+		newProject=Projects(projectID=project_counter , projectName=projectName, managerUser=username, managerName=managerName, project_info=project_info,progress=0, pDeadline=pDeadline)
+		newProject.save()
+
+		newProfile=Profile(username=username , projectID= project_counter)
+		newProfile.save()
+			
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		return response
+
+			
+	elif request.method == "OPTIONS":
+		print '##############OPTIONS###########'
+		results ={}
+		results["successful"]="false"
+		results["mode"]="option mode- addProject"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+	elif request.method == "GET":
+		print "GET MODE"
+		results ={}
+		results["successful"]="false"
+		results["mode"]="get mode - addProject"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+
+	else:
+		return HttpResponseBadRequest()
+
+
+	
+
+def addTask(request):
+
+	if request.method == "POST":
+		print 'POST-addTask'
+		projectID=unicodedata.normalize('NFKD', request.POST['projectID']).encode('utf-8','ignore');
+		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
+		taskName=unicodedata.normalize('NFKD', request.POST['projectName']).encode('utf-8','ignore');
+		task_info=unicodedata.normalize('NFKD', request.POST['project_info']).encode('utf-8','ignore');
+		deadline=unicodedata.normalize('NFKD', request.POST['deadline']).encode('utf-8','ignore');
+
+		task_counter += 1
+		results ={}
+		results["successful"]="true"
+
+		newTask=Task(taskID=task_counter,taskName=taskName,task_info=task_info, projectID=projectID,username=username,deadline=deadline,status='1')
+		newTask.save()
+
+		
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		return response
+
+			
+	elif request.method == "OPTIONS":
+		print '##############OPTIONS###########'
+		results ={}
+		results["successful"]="false"
+		results["mode"]="option mode- addTask"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+	elif request.method == "GET":
+		print "GET MODE"
+		results ={}
+		results["successful"]="false"
+		results["mode"]="get mode - addTask"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+
+	else:
+		return HttpResponseBadRequest()
+
+	
