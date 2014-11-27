@@ -151,7 +151,7 @@ def projectInfo(request):
 		project_info=Projects.objects.get(projectID__iexact=projectID).as_json()
 		project_info.pDeadline=str(project_info.pDeadline)
 		results["projectInfo"]=(project_info)
-		
+
 		print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
 		response['Access-Control-Allow-Origin'] = "*"
@@ -500,22 +500,52 @@ def addTask(request):
 		
 		deadline= datetime.date(int(year),int(month),int(day))
 
-		task_counter += 1
-		results ={}
-		results["successful"]="true"
+		if not(Login.objects.filter(username__iexact=username).exists()):
+			print "username doesnt exist"
+			results ={}
+			results["successful"]="false"
+			results["error"]="1"
+			print json.dumps(results)
+			response = HttpResponse(json.dumps(results), content_type="application/json")
+			response['Access-Control-Allow-Origin'] = "*"
+			response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+			response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+			return response
 
-		newTask=Task(taskID=task_counter,taskName=taskName,task_info=task_info, projectID=projectID,username=username,deadline=deadline,status='1')
-		newTask.save()
-
+		added=0
+		for pro in Profile.objects.filter(projectID__iexact=projectID):
+			if(pro.username==username):
+				added=1
 		
-		print json.dumps(results)
-		response = HttpResponse(json.dumps(results), content_type="application/json")
-		response['Access-Control-Allow-Origin'] = "*"
-		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
-		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
-		return response
+		if(added==0):
+			print "username isnt added to this project"
+			results ={}
+			results["successful"]="false"
+			results["error"]="2"
+			print json.dumps(results)
+			response = HttpResponse(json.dumps(results), content_type="application/json")
+			response['Access-Control-Allow-Origin'] = "*"
+			response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+			response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+			return response
+
+		if(added==1):
+			task_counter += 1
+			results ={}
+			results["successful"]="true"
+
+			newTask=Task(taskID=task_counter,taskName=taskName,task_info=task_info, projectID=projectID,username=username,deadline=deadline,status='1')
+			newTask.save()
 
 			
+			print json.dumps(results)
+			response = HttpResponse(json.dumps(results), content_type="application/json")
+			response['Access-Control-Allow-Origin'] = "*"
+			response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+			response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+			return response
+
+				
 	elif request.method == "OPTIONS":
 		print '##############OPTIONS###########'
 		results ={}
