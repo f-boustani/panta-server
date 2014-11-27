@@ -148,10 +148,10 @@ def projectInfo(request):
 
 		results ={}
 		results["successful"]="true"
-		Projects.objects.get(projectID__iexact=projectID).pDeadline=str(Projects.objects.get(projectID__iexact=projectID).pDeadline)
-
-		results["projectInfo"]=(Projects.objects.get(projectID__iexact=projectID).as_json())
-
+		project_info=Projects.objects.get(projectID__iexact=projectID).as_json()
+		project_info.pDeadline=str(project_info.pDeadline)
+		results["projectInfo"]=(project_info)
+		
 		print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
 		response['Access-Control-Allow-Origin'] = "*"
@@ -297,10 +297,10 @@ def taskInfo(request):
 		print taskID
 		results ={}
 		results["successful"]="true"
-		Task.objects.get(taskID__iexact=taskID).deadline=str(Task.objects.get(taskID__iexact=taskID).deadline)
+		task_info=Task.objects.get(taskID__iexact=taskID).as_json()
+		task_info.deadline=str(task_info)
 		
-		print type(Task.objects.get(taskID__iexact=taskID).deadline)
-		results["taskInfo"]=(Task.objects.get(taskID__iexact=taskID).as_json())
+		results["taskInfo"]=(task_info)
 			
 		print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
