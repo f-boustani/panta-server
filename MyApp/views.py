@@ -7,8 +7,8 @@ import unicodedata
 from MyApp.models import *
 
 
-project_counter=1
-task_counter=2
+project_counter=0
+task_counter=0
 
 
 def register(request):
@@ -428,7 +428,7 @@ def addProject(request):
 
 
 		managerName=Login.objects.get(username__iexact=username).name
-
+		print project_counter
 		project_counter += 1
 		results ={}
 		results["successful"]="true"
