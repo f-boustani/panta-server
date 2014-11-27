@@ -21,7 +21,7 @@ def register(request):
 		if(Login.objects.filter(username__iexact=username).exists()):
 			results ={}
 			results["successful"]="false"
-			results["err"]="exists"
+			results["error"]="exists"
 			print json.dumps(results)
 			response = HttpResponse(json.dumps(results), content_type="application/json")
 			response['Access-Control-Allow-Origin'] = "*"
@@ -39,8 +39,11 @@ def register(request):
 
 		lst=[]
 		for ob in Profile.objects.filter(username__iexact=username):
-			lst.append(Projects.objects.get(projectID__iexact=pro.projectID).as_json())
-	
+			project=Projects.objects.get(projectID__iexact=ob.projectID)
+			project.pDeadline=str(project.pDeadline)
+			lst.append(project.as_json())
+
+			
 		results["projects"]=lst	
 		print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
@@ -108,7 +111,7 @@ def login(request):
 				return response
 		results ={}	
 		results["successful"]="false"
-		results["err"]="incorrect"
+		results["error"]="incorrect"
 		print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
 		response['Access-Control-Allow-Origin'] = "*"
