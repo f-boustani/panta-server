@@ -294,10 +294,12 @@ def taskInfo(request):
 	if request.method == "POST":
 		print 'POST-taskInfo'
 		taskID=unicodedata.normalize('NFKD', request.POST['taskID']).encode('utf-8','ignore');
-
+		print taskID
 		results ={}
 		results["successful"]="true"
 		Task.objects.get(taskID__iexact=taskID).deadline=str(Task.objects.get(taskID__iexact=taskID).deadline)
+		
+		print Task.objects.get(taskID__iexact=taskID).deadline
 		results["taskInfo"]=(Task.objects.get(taskID__iexact=taskID).as_json())
 			
 		print json.dumps(results)
