@@ -148,9 +148,9 @@ def projectInfo(request):
 
 		results ={}
 		results["successful"]="true"
-		project_info=Projects.objects.get(projectID__iexact=projectID).as_json()
+		project_info=Projects.objects.get(projectID__iexact=projectID)
 		project_info.pDeadline=str(project_info.pDeadline)
-		results["projectInfo"]=(project_info)
+		results["projectInfo"]=project_info.as_json()
 
 		print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
@@ -294,13 +294,13 @@ def taskInfo(request):
 	if request.method == "POST":
 		print 'POST-taskInfo'
 		taskID=unicodedata.normalize('NFKD', request.POST['taskID']).encode('utf-8','ignore');
-		print taskID
+		
 		results ={}
 		results["successful"]="true"
-		task_info=Task.objects.get(taskID__iexact=taskID).as_json()
-		task_info.deadline=str(task_info)
+		task_info=Task.objects.get(taskID__iexact=taskID)
+		task_info.deadline=str(task_info.deadline)
 		
-		results["taskInfo"]=(task_info)
+		results["taskInfo"]=task_info.as_json()
 			
 		print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
