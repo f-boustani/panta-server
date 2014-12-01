@@ -17,7 +17,7 @@ def register(request):
 	#print datetime.datetime.now().strftime("%y-%m-%d %H:%M:%S")
 	from_zone = tz.gettz('UTC')
 	to_zone = tz.gettz('Asia/Tehran')
-	utc = a.datetime.datetime.now()
+	utc = datetime.datetime.now()
 	lcl = utc.astimezone(to_zone)
 	print khayyam.JalaliDatetime.from_datetime(lcl).strftime("%C")
 	if request.method == "POST":
