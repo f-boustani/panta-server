@@ -7,7 +7,7 @@ import json
 import unicodedata
 from MyApp.models import *
 import khayyam
-
+from dateutil import tz
 project_counter=0
 task_counter=0
 
@@ -16,9 +16,9 @@ def register(request):
 	print "-------------------------------------------"
 	#print datetime.datetime.now().strftime("%y-%m-%d %H:%M:%S")
 	from_zone = tz.gettz('UTC')
-    to_zone = tz.gettz('Asia/Tehran')
-    utc = a.datetime.datetime.now()
-    lcl = utc.astimezone(to_zone)
+	to_zone = tz.gettz('Asia/Tehran')
+	utc = a.datetime.datetime.now()
+	lcl = utc.astimezone(to_zone)
 	print khayyam.JalaliDatetime.from_datetime(lcl).strftime("%C")
 	if request.method == "POST":
 		print 'register- post mode'
