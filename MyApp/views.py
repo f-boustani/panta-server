@@ -352,8 +352,8 @@ def addMember(request):
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		
 		for obj in Profile.objects.filter(username__iexact=username):
-			print obj.projectID
-			print projectID
+			print type(obj.projectID)
+			print type(projectID)
 			if(obj.projectID==projectID):
 
 				print "username is already added"
