@@ -353,7 +353,7 @@ def addMember(request):
 		
 		for obj in Profile.objects.filter(username__iexact=username):
 			print obj.projectID
-			
+			print projectID
 			if(obj.projectID==projectID):
 
 				print "username is already added"
