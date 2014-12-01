@@ -12,6 +12,9 @@ task_counter=0
 
 
 def register(request):
+	print "-------------------------------------------"
+	t=datetime.datetime.now().time()
+	print t.isoformat()
 	if request.method == "POST":
 		print 'register- post mode'
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
@@ -65,6 +68,7 @@ def register(request):
 		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
 		response['Access-Control-Max-Age'] = "1800"
 		return response
+
 	elif request.method == "GET":
 		print "GET MODE-register"
 		results ={}
@@ -81,6 +85,10 @@ def register(request):
 		return HttpResponseBadRequest()
 
 def login(request):
+
+	print "-------------------------------------------"
+	t=datetime.datetime.now().time()
+	print t.isoformat()
      
 	if request.method == "POST":
 		print 'POST-login'
@@ -125,6 +133,10 @@ def login(request):
 
 def view_profile(request):
 
+	print "-------------------------------------------"
+	t=datetime.datetime.now().time()
+	print t.isoformat()
+
 	if request.method == "POST":
 		print 'POST-profile'
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
@@ -146,6 +158,10 @@ def view_profile(request):
     
 
 def projectInfo(request):
+
+	print "-------------------------------------------"
+	t=datetime.datetime.now().time()
+	print t.isoformat()
 
 	if request.method == "POST":
 		print 'POST-projectInfo'
@@ -197,6 +213,10 @@ def projectInfo(request):
 
 def project_users(request):
 
+	print "-------------------------------------------"
+	t=datetime.datetime.now().time()
+	print t.isoformat()
+
 	if request.method == "POST":
 		print 'POST-project_users'
 		projectID=unicodedata.normalize('NFKD', request.POST['projectID']).encode('utf-8','ignore');
@@ -245,6 +265,10 @@ def project_users(request):
 
 
 def project_tasks(request):
+
+	print "-------------------------------------------"
+	t=datetime.datetime.now().time()
+	print t.isoformat()
 
 	if request.method == "POST":
 		print 'POST-project_tasks'
@@ -296,6 +320,11 @@ def project_tasks(request):
 
 
 def taskInfo(request):
+
+	print "-------------------------------------------"
+	t=datetime.datetime.now().time()
+	print t.isoformat()
+
 	if request.method == "POST":
 		print 'POST-taskInfo'
 		taskID=unicodedata.normalize('NFKD', request.POST['taskID']).encode('utf-8','ignore');
@@ -345,6 +374,10 @@ def taskInfo(request):
 
 
 def addMember(request):
+
+	print "-------------------------------------------"
+	t=datetime.datetime.now().time()
+	print t.isoformat()
 
 	if request.method == "POST":
 		print 'POST-addMember'
@@ -427,6 +460,10 @@ def addMember(request):
 
 def addProject(request):
 
+	print "-------------------------------------------"
+	t=datetime.datetime.now().time()
+	print t.isoformat()
+
 	global project_counter
 
 	if request.method == "POST":
@@ -493,6 +530,10 @@ def addProject(request):
 	
 
 def addTask(request):
+
+	print "-------------------------------------------"
+	t=datetime.datetime.now().time()
+	print t.isoformat()
 
 	global task_counter
 
