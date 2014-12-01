@@ -6,7 +6,7 @@ import time
 import json
 import unicodedata
 from MyApp.models import *
-
+import khayyam
 
 project_counter=0
 task_counter=0
@@ -14,8 +14,8 @@ task_counter=0
 
 def register(request):
 	print "-------------------------------------------"
-	t=datetime.datetime.now()
-	print t.isoformat()
+	#print datetime.datetime.now().strftime("%y-%m-%d %H:%M:%S")
+	print khayyam.JalaliDatetime.now().strftime("%C")
 	if request.method == "POST":
 		print 'register- post mode'
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
