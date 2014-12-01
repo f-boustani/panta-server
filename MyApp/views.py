@@ -15,11 +15,11 @@ task_counter=0
 def register(request):
 	print "-------------------------------------------"
 	#print datetime.datetime.now().strftime("%y-%m-%d %H:%M:%S")
-	from_zone = tz.gettz('UTC')
-	to_zone = tz.gettz('Asia/Tehran')
-	utc = datetime.datetime.now()
-	lcl = utc.astimezone(to_zone)
-	print khayyam.JalaliDatetime.from_datetime(lcl).strftime("%C")
+	#from_zone = tz.gettz('UTC')
+	#to_zone = tz.gettz('Asia/Tehran')
+	#utc = datetime.datetime.now()
+	#lcl = utc.astimezone(to_zone)
+	print khayyam.JalaliDatetime.now().strftime("%C")
 	if request.method == "POST":
 		print 'register- post mode'
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
