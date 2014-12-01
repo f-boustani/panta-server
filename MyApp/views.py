@@ -351,18 +351,20 @@ def addMember(request):
 		projectID=unicodedata.normalize('NFKD', request.POST['projectID']).encode('utf-8','ignore');
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		
-		if(Profile.objects.filter(username__iexact=username).exists() and Profile.objects.filter(username__iexact=username).projectID==projectID ):
+		for obj in Profile.objects.filter(username__iexact=username):
 			
-			print "username is already added"
-			results ={}
-			results["successful"]="false"
-			results["error"]="1"
-			print json.dumps(results)
-			response = HttpResponse(json.dumps(results), content_type="application/json")
-			response['Access-Control-Allow-Origin'] = "*"
-			response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
-			response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
-			return response
+			if(obj.projectID==projectID):
+
+				print "username is already added"
+				results ={}
+				results["successful"]="false"
+				results["error"]="1"
+				print json.dumps(results)
+				response = HttpResponse(json.dumps(results), content_type="application/json")
+				response['Access-Control-Allow-Origin'] = "*"
+				response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+				response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+				return response
 
 
 		if(Login.objects.filter(username__iexact=username).exists()):
