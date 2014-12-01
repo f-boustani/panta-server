@@ -2,6 +2,7 @@ from django.http import HttpResponse,HttpResponseBadRequest
 from django.shortcuts import render_to_response
 from django.template import Context
 import datetime
+import time
 import json
 import unicodedata
 from MyApp.models import *
@@ -13,7 +14,7 @@ task_counter=0
 
 def register(request):
 	print "-------------------------------------------"
-	t=datetime.datetime.now().time()
+	t=datetime.datetime.now()
 	print t.isoformat()
 	if request.method == "POST":
 		print 'register- post mode'
@@ -87,7 +88,7 @@ def register(request):
 def login(request):
 
 	print "-------------------------------------------"
-	t=datetime.datetime.now().time()
+	t=datetime.datetime.now()
 	print t.isoformat()
      
 	if request.method == "POST":
@@ -134,7 +135,7 @@ def login(request):
 def view_profile(request):
 
 	print "-------------------------------------------"
-	t=datetime.datetime.now().time()
+	t=datetime.datetime.now()
 	print t.isoformat()
 
 	if request.method == "POST":
@@ -160,7 +161,7 @@ def view_profile(request):
 def projectInfo(request):
 
 	print "-------------------------------------------"
-	t=datetime.datetime.now().time()
+	t=datetime.datetime.now()
 	print t.isoformat()
 
 	if request.method == "POST":
@@ -214,7 +215,7 @@ def projectInfo(request):
 def project_users(request):
 
 	print "-------------------------------------------"
-	t=datetime.datetime.now().time()
+	t=datetime.datetime.now()
 	print t.isoformat()
 
 	if request.method == "POST":
@@ -267,7 +268,7 @@ def project_users(request):
 def project_tasks(request):
 
 	print "-------------------------------------------"
-	t=datetime.datetime.now().time()
+	t=datetime.datetime.now()
 	print t.isoformat()
 
 	if request.method == "POST":
@@ -322,7 +323,7 @@ def project_tasks(request):
 def taskInfo(request):
 
 	print "-------------------------------------------"
-	t=datetime.datetime.now().time()
+	t=datetime.datetime.now()
 	print t.isoformat()
 
 	if request.method == "POST":
@@ -376,7 +377,7 @@ def taskInfo(request):
 def addMember(request):
 
 	print "-------------------------------------------"
-	t=datetime.datetime.now().time()
+	t=datetime.datetime.now()
 	print t.isoformat()
 
 	if request.method == "POST":
@@ -461,7 +462,7 @@ def addMember(request):
 def addProject(request):
 
 	print "-------------------------------------------"
-	t=datetime.datetime.now().time()
+	t=datetime.datetime.now()
 	print t.isoformat()
 
 	global project_counter
@@ -532,7 +533,7 @@ def addProject(request):
 def addTask(request):
 
 	print "-------------------------------------------"
-	t=datetime.datetime.now().time()
+	t=datetime.datetime.now()
 	print t.isoformat()
 
 	global task_counter
