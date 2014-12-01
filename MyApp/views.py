@@ -132,6 +132,32 @@ def login(request):
 		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
 		return response				
 
+			
+	elif request.method == "OPTIONS":
+		print '##############OPTIONS###########'
+		results ={}
+		results["successful"]="false"
+		results["mode"]="option mode-login"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+
+	elif request.method == "GET":
+		print "GET MODE-login"
+		results ={}
+		results["successful"]="false"
+		results["mode"]="get mode"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
 	else:
 		return HttpResponseBadRequest()
 
