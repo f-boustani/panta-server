@@ -45,7 +45,7 @@ def register(request):
 		results["successful"]="true"
 		results["user_info"]= Login.objects.get(username__iexact=username).as_json()	
 
-		"""
+		
 		lst=[]
 		for ob in Profile.objects.filter(username__iexact=username):
 			project=Projects.objects.get(id__iexact=ob.projectID)
@@ -54,7 +54,7 @@ def register(request):
 
 			
 		results["projects"]=lst	
-		"""
+		
 
 
 		print json.dumps(results)
@@ -114,7 +114,7 @@ def login(request):
 				results["user_info"]=Login.objects.get(username__iexact=username).as_json()	
 
 
-				"""
+			
 				lst=[]
 				for pro in Profile.objects.filter(username__iexact=username):
 					project=Projects.objects.get(projectID__iexact=pro.projectID)
@@ -122,7 +122,7 @@ def login(request):
 					lst.append(project.as_json())
 		
 				results["projects"]=lst
-				"""
+			
 
 				print json.dumps(results)
 				response = HttpResponse(json.dumps(results), content_type="application/json")
