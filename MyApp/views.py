@@ -130,7 +130,7 @@ def login(request):
 
 			
 				lst=[]
-				"""
+				
 				for pro in Profile.objects.filter(username__iexact=username):
 			
 					project=Projects.objects.get(id__iexact=pro.projectID)
@@ -148,7 +148,7 @@ def login(request):
 					project.pDeadline=str(project.pDeadline)
 					lst.append(project.as_json())
 				
-
+				"""
 				results["projects"]=lst
 			
 
@@ -785,3 +785,13 @@ def deleteProject(request):
 	else:
 		return HttpResponseBadRequest()
 
+
+def editProjet(request):
+
+	pass
+
+
+
+def editTask(request):
+
+	pass
