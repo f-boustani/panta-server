@@ -786,7 +786,7 @@ def deleteProject(request):
 		return HttpResponseBadRequest()
 
 
-def editProjet(request):
+def editProject(request):
 
 	pass
 
