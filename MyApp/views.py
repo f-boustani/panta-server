@@ -5,6 +5,7 @@ import datetime
 import time
 import json
 import unicodedata
+from django.db.models import Q
 from MyApp.models import *
 #import khayyam
 #from dateutil import tz
