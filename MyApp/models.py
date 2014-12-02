@@ -37,7 +37,7 @@ class Profile(models.Model):
                 username=self.username,
                 projectID=self.projectID)
 class Projects(models.Model):
-    projectID = models.IntegerField(max_length=15)
+    
     projectName = models.CharField(max_length=50)
     managerName = models.CharField(max_length=50)
     managerUser = models.EmailField()
@@ -50,14 +50,14 @@ class Projects(models.Model):
                 managerName=self.managerName,
                 managerUser=self.managerUser,
                 projectName=self.projectName,
-                projectID=self.projectID,
+                projectID=self.id,
                 project_info=self.project_info,
                 progress=self.progress,
             	pDeadline=self.pDeadline)
 
 
 class Task(models.Model):
-    taskID = models.IntegerField(max_length=15)
+    
     taskName = models.CharField(max_length=100) 
     task_info = models.CharField(max_length=5000)
     username = models.EmailField()
@@ -66,11 +66,11 @@ class Task(models.Model):
     status = models.CharField(max_length=1, choices=task_CHOICES)
 
     class Meta:
-        unique_together = ('taskID','username')
+        unique_together = ('id','username')
 
     def as_json(self):
             return dict(
-                taskID=self.taskID,
+                taskID=self.id,
                 taskName=self.taskName,
                 task_info=self.task_info,
                 username=self.username,

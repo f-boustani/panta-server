@@ -6,20 +6,20 @@ import time
 import json
 import unicodedata
 from MyApp.models import *
-import khayyam
-from dateutil import tz
+#import khayyam
+#from dateutil import tz
 project_counter=0
 task_counter=0
 
 
 def register(request):
 	print "-------------------------------------------"
-	#print datetime.datetime.now().strftime("%y-%m-%d %H:%M:%S")
+	print datetime.datetime.now().strftime("%y-%m-%d %H:%M:%S")
 	#from_zone = tz.gettz('UTC')
 	#to_zone = tz.gettz('Asia/Tehran')
 	#utc = datetime.datetime.now()
 	#lcl = utc.astimezone(to_zone)
-	print khayyam.JalaliDatetime.now().strftime("%C")
+	#print khayyam.JalaliDatetime.now().strftime("%C")
 	if request.method == "POST":
 		print 'register- post mode'
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
@@ -45,14 +45,18 @@ def register(request):
 		results["successful"]="true"
 		results["user_info"]= Login.objects.get(username__iexact=username).as_json()	
 
+		"""
 		lst=[]
 		for ob in Profile.objects.filter(username__iexact=username):
-			project=Projects.objects.get(projectID__iexact=ob.projectID)
+			project=Projects.objects.get(id__iexact=ob.projectID)
 			project.pDeadline=str(project.pDeadline)
 			lst.append(project.as_json())
 
 			
 		results["projects"]=lst	
+		"""
+
+
 		print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
 		response['Access-Control-Allow-Origin'] = "*"
@@ -107,6 +111,10 @@ def login(request):
 			if(passwd==password):
 				results ={}
 				results["successful"]="true"
+				results["user_info"]=Login.objects.get(username__iexact=username).as_json()	
+
+
+				"""
 				lst=[]
 				for pro in Profile.objects.filter(username__iexact=username):
 					project=Projects.objects.get(projectID__iexact=pro.projectID)
@@ -114,8 +122,8 @@ def login(request):
 					lst.append(project.as_json())
 		
 				results["projects"]=lst
-				results["user_info"]=Login.objects.get(username__iexact=username).as_json()	
-				
+				"""
+
 				print json.dumps(results)
 				response = HttpResponse(json.dumps(results), content_type="application/json")
 				response['Access-Control-Allow-Origin'] = "*"
@@ -175,7 +183,7 @@ def view_profile(request):
 		results ={}
 		lst=[]
 		for pro in Profile.objects.filter(username__iexact=username):
-			lst.append(Projects.objects.get(projectID__iexact=pro.projectID).as_json())
+			lst.append(Projects.objects.get(id__iexact=pro.projectID).as_json())
 			
 		results["projects"]=lst
 		response = HttpResponse(json.dumps(results), content_type="application/json")
@@ -196,11 +204,11 @@ def projectInfo(request):
 
 	if request.method == "POST":
 		print 'POST-projectInfo'
-		projectID=unicodedata.normalize('NFKD', request.POST['projectID']).encode('utf-8','ignore');
+		projectID=int(unicodedata.normalize('NFKD', request.POST['projectID']).encode('utf-8','ignore'));
 
 		results ={}
 		results["successful"]="true"
-		project_info=Projects.objects.get(projectID__iexact=projectID)
+		project_info=Projects.objects.get(id__iexact=projectID)
 		project_info.pDeadline=str(project_info.pDeadline)
 		results["projectInfo"]=project_info.as_json()
 
@@ -250,7 +258,7 @@ def project_users(request):
 
 	if request.method == "POST":
 		print 'POST-project_users'
-		projectID=unicodedata.normalize('NFKD', request.POST['projectID']).encode('utf-8','ignore');
+		projectID=int(unicodedata.normalize('NFKD', request.POST['projectID']).encode('utf-8','ignore'));
 
 		results ={}
 		results["successful"]="true"
@@ -303,7 +311,7 @@ def project_tasks(request):
 
 	if request.method == "POST":
 		print 'POST-project_tasks'
-		projectID=unicodedata.normalize('NFKD', request.POST['projectID']).encode('utf-8','ignore');
+		projectID=int(unicodedata.normalize('NFKD', request.POST['projectID']).encode('utf-8','ignore'));
 
 		results ={}
 		results["successful"]="true"
@@ -358,11 +366,11 @@ def taskInfo(request):
 
 	if request.method == "POST":
 		print 'POST-taskInfo'
-		taskID=unicodedata.normalize('NFKD', request.POST['taskID']).encode('utf-8','ignore');
+		taskID=int(unicodedata.normalize('NFKD', request.POST['taskID']).encode('utf-8','ignore'));
 		
 		results ={}
 		results["successful"]="true"
-		task_info=Task.objects.get(taskID__iexact=taskID)
+		task_info=Task.objects.get(id__iexact=taskID)
 		task_info.deadline=str(task_info.deadline)
 		
 		results["taskInfo"]=task_info.as_json()
@@ -510,15 +518,16 @@ def addProject(request):
 
 
 		managerName=Login.objects.get(username__iexact=username).name
-		print project_counter
-		project_counter += 1
+		#print project_counter
+		#project_counter += 1
 		results ={}
 		results["successful"]="true"
 
-		newProject=Projects(projectID=project_counter , projectName=projectName, managerUser=username, managerName=managerName, project_info=project_info,progress=0, pDeadline=pDeadline)
+		newProject=Projects(projectName=projectName, managerUser=username, managerName=managerName, project_info=project_info,progress=0, pDeadline=pDeadline)
 		newProject.save()
+		projectID=Projects.objects.all().order_by("-id")[-1].id
 
-		newProfile=Profile(username=username , projectID= project_counter)
+		newProfile=Profile(username=username , projectID= projectID)
 		newProfile.save()
 			
 		print json.dumps(results)
@@ -610,11 +619,11 @@ def addTask(request):
 			return response
 
 		if(added==1):
-			task_counter += 1
+			
 			results ={}
 			results["successful"]="true"
 
-			newTask=Task(taskID=task_counter,taskName=taskName,task_info=task_info, projectID=projectID,username=username,deadline=deadline,status='1')
+			newTask=Task(taskName=taskName,task_info=task_info, projectID=projectID,username=username,deadline=deadline,status='1')
 			newTask.save()
 
 			
