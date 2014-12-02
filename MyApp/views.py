@@ -124,6 +124,7 @@ def login(request):
 					
 					task=[]
 					for t in Task.objects.filter(Q(projectID__iexact=pro.projectID) & Q(username__iexact=username)):
+						t.deadline=str(t.deadline)
 						task.append(t.as_json())
 					lst.append((project.as_json(),task))
 
