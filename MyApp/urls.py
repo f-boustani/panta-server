@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     (r'^taskInfo/$', taskInfo),
     (r'^addMember/$', addMember),
     (r'^addProject/$', addProject),
-    (r'^addTask/$', addTask)
+    (r'^addTask/$', addTask),
+    (r'^deleteProject/$', deleteProject)
 #    url(r'^admin/', include(admin.site.urls)),
 )

@@ -117,10 +117,22 @@ def login(request):
 			
 				lst=[]
 				for pro in Profile.objects.filter(username__iexact=username):
+			
+					project=Projects.objects.get(id__iexact=pro.projectID)
+					project.pDeadline=str(project.pDeadline)
+					
+					task=[]
+					for t in Task.objects.filter(Q(projectID__iexact=pro.projectID) & Q(username__iexact=username)):
+						task.append(t.as_json())
+					lst.append((project.as_json(),task))
+
+				"""
+				for pro in Profile.objects.filter(username__iexact=username):
 					project=Projects.objects.get(id__iexact=pro.projectID)
 					project.pDeadline=str(project.pDeadline)
 					lst.append(project.as_json())
-		
+				"""
+
 				results["projects"]=lst
 			
 
@@ -179,11 +191,17 @@ def view_profile(request):
 	if request.method == "POST":
 		print 'POST-profile'
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
-		print username
+		
 		results ={}
 		lst=[]
 		for pro in Profile.objects.filter(username__iexact=username):
-			lst.append(Projects.objects.get(id__iexact=pro.projectID).as_json())
+			
+			project=Projects.objects.get(id__iexact=pro.projectID).as_json()
+			task=[]
+			for t in Task.objects.filter(Q(projectID__iexact=pro.projectID) & Q(username__iexact=username)):
+				task.append(t.as_json())
+			lst.append((project,task))
+
 			
 		results["projects"]=lst
 		response = HttpResponse(json.dumps(results), content_type="application/json")
@@ -503,8 +521,6 @@ def addProject(request):
 	t=datetime.datetime.now()
 	print t.isoformat()
 
-	global project_counter
-
 	if request.method == "POST":
 		print 'POST-addProject'
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
@@ -576,8 +592,6 @@ def addTask(request):
 	print "-------------------------------------------"
 	t=datetime.datetime.now()
 	print t.isoformat()
-
-	global task_counter
 
 	if request.method == "POST":
 		print 'POST-addTask'
@@ -666,3 +680,60 @@ def addTask(request):
 		return HttpResponseBadRequest()
 
 	
+def deleteProject(request):
+
+	print "-------------------------------------------"
+	t=datetime.datetime.now()
+	print t.isoformat()
+
+	if request.method == "POST":
+		print 'POST-delete project'
+		projectID=int(unicodedata.normalize('NFKD', request.POST['projectID']).encode('utf-8','ignore'));
+		results ={}
+		results["successful"]="true"
+
+		Projects.objects.get(id__exact=projectID).delete()	
+
+		for obj in Profile.objects.filter(projectID__exact=projectID):
+			obj.delete()
+
+		for task in Task.objects.filter(projectID__exact=projectID):
+			task.delete()
+
+
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		return response
+
+			
+	elif request.method == "OPTIONS":
+		print '##############OPTIONS###########'
+		results ={}
+		results["successful"]="false"
+		results["mode"]="option mode- deleteProject"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+	elif request.method == "GET":
+		print "GET MODE"
+		results ={}
+		results["successful"]="false"
+		results["mode"]="get mode - deleteProject"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+
+	else:
+		return HttpResponseBadRequest()
+
