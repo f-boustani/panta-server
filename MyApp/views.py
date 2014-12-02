@@ -526,7 +526,8 @@ def addProject(request):
 		newProject=Projects(projectName=projectName, managerUser=username, managerName=managerName, project_info=project_info,progress=0, pDeadline=pDeadline)
 		newProject.save()
 		lst=Projects.objects.all().order_by("-id")
-		projectID=lst[len(lst)-1].id
+		print lst
+		projectID=lst[0].id
 
 		newProfile=Profile(username=username , projectID= projectID)
 		newProfile.save()
