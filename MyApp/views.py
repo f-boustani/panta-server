@@ -232,6 +232,7 @@ def view_profile(request):
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		
 		results ={}
+		results["successful"]="true"
 		lst=[]
 
 		for pro in Profile.objects.filter(username__iexact=username):
