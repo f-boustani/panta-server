@@ -355,7 +355,7 @@ def projectInfo(request):
 		return HttpResponseBadRequest()
 
 
-1
+
 
 def project_users(request):
 
