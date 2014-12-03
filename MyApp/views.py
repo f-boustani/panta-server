@@ -142,7 +142,7 @@ def login(request):
 						task.append(t.as_json())
 					temp=project.as_json()
 					temp["tasks"]=task
-					lst.append(tmp)
+					lst.append(temp)
 				
 				"""
 				for pro in Profile.objects.filter(username__iexact=username):
@@ -224,7 +224,7 @@ def view_profile(request):
 				task.append(t.as_json())
 			temp=project.as_json()
 			temp["tasks"]=task
-			lst.append(tmp)
+			lst.append(temp)
 			
 			
 		results["projects"]=lst
