@@ -898,6 +898,8 @@ def editTask(request):
 
 	if request.method == "POST":
 		print 'POST-edit task'
+		projectID=int(unicodedata.normalize('NFKD', request.POST['projectID']).encode('utf-8','ignore'));
+		
 		taskID=int(unicodedata.normalize('NFKD', request.POST['taskID']).encode('utf-8','ignore'));
 		taskName=unicodedata.normalize('NFKD', request.POST['taskName']).encode('utf-8','ignore');
 		task_info=unicodedata.normalize('NFKD', request.POST['task_info']).encode('utf-8','ignore');
@@ -907,21 +909,40 @@ def editTask(request):
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		
 		deadline= datetime.date(int(year),int(month),int(day))
-		results ={}
-		print projectID
-		
-		Projects.objects.get(id__exact=taskID).update(taskName=taskName,task_info=task_info,deadline=deadline,username=username)	
 
-		results["successful"]="true"
+		added=0
+		for i in Profile.objects.filter(projectID__iexact=projectID):
+			if(i.username==username):
+				added=1
 
-		print json.dumps(results)
-		response = HttpResponse(json.dumps(results), content_type="application/json")
-		response['Access-Control-Allow-Origin'] = "*"
-		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
-		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
-		return response
-
+		if(added==1):
+			results ={}
+			print projectID
 			
+			Task.objects.get(id__exact=taskID).update(taskName=taskName,task_info=task_info,deadline=deadline,username=username)	
+
+			results["successful"]="true"
+
+			print json.dumps(results)
+			response = HttpResponse(json.dumps(results), content_type="application/json")
+			response['Access-Control-Allow-Origin'] = "*"
+			response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+			response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+			return response
+
+		if(added==0):
+			print "this user is not a member of this project"
+			results ={}
+			results["successful"]="false"
+			results["error"]="1"
+
+			print json.dumps(results)
+			response = HttpResponse(json.dumps(results), content_type="application/json")
+			response['Access-Control-Allow-Origin'] = "*"
+			response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+			response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+			return response
+
 	elif request.method == "OPTIONS":
 		print '##############OPTIONS###########'
 		results ={}
