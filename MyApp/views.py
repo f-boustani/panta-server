@@ -48,7 +48,7 @@ def register(request):
 
 		
 		lst=[]
-		"""
+		
 		for pro in Profile.objects.filter(username__iexact=username):
 	
 			project=Projects.objects.get(id__iexact=pro.projectID)
@@ -57,15 +57,23 @@ def register(request):
 			task=[]
 			for t in Task.objects.filter(Q(projectID__iexact=pro.projectID) & Q(username__iexact=username)):
 				t.deadline=str(t.deadline)
-				task.append(t.as_json())
-			lst.append((project.as_json(),task))
+				tmp1=t.as_json()
+				del tmp1["task_info"]
+				del tmp1["deadline"]
+				del tmp1["status"]
+				del tmp1["projectID"]
+				del tmp1["username"]
+				task.append(tmp1)
 
-		"""
-		for ob in Profile.objects.filter(username__iexact=username):
-			project=Projects.objects.get(id__iexact=ob.projectID)
-			project.pDeadline=str(project.pDeadline)
-			lst.append(project.as_json())
-
+			temp=project.as_json()
+			del temp["pDeadline"]
+			del temp["progress"]
+			del temp["managerName"]
+			del temp["managerUser"]
+			del temp["project_info"]
+				
+			temp["tasks"]=task
+			lst.append(temp)
 			
 		results["projects"]=lst	
 		
@@ -139,9 +147,22 @@ def login(request):
 					task=[]
 					for t in Task.objects.filter(Q(projectID__iexact=pro.projectID) & Q(username__iexact=username)):
 						t.deadline=str(t.deadline)
-						task.append(t.as_json())
+						tmp1=t.as_json()
+						del tmp1["task_info"]
+						del tmp1["deadline"]
+						del tmp1["status"]
+						del tmp1["projectID"]
+						del tmp1["username"]
+						task.append(tmp1)
 					temp=project.as_json()
 					del temp["pDeadline"]
+					del temp["pDeadline"]
+					del temp["progress"]
+					del temp["managerName"]
+					del temp["managerUser"]
+					del temp["project_info"]
+			
+
 					temp["tasks"]=task
 					lst.append(temp)
 				
@@ -222,9 +243,24 @@ def view_profile(request):
 			task=[]
 			for t in Task.objects.filter(Q(projectID__iexact=pro.projectID) & Q(username__iexact=username)):
 				t.deadline=str(t.deadline)
-				task.append(t.as_json())
+				tmp1=t.as_json()
+				del tmp1["task_info"]
+				del tmp1["deadline"]
+				del tmp1["status"]
+				del tmp1["projectID"]
+				del tmp1["username"]
+				task.append(tmp1)
+
 			temp=project.as_json()
 			del temp["pDeadline"]
+			del temp["progress"]
+			del temp["managerName"]
+			del temp["managerUser"]
+			del temp["project_info"]
+			
+			
+			
+			
 			temp["tasks"]=task
 			lst.append(temp)
 			
