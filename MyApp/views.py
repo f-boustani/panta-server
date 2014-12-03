@@ -847,7 +847,11 @@ def editProject(request):
 		results ={}
 		print projectID
 		
-		Projects.objects.get(id__exact=projectID).update(projectName=projectName,project_info=project_info,pDeadline=pDeadline)	
+		p=Projects.objects.get(id__exact=projectID)
+		p.projectName=projectName
+		p.project_info=project_info
+		p.pDeadline=pDeadline
+		p.save()
 
 		results["successful"]="true"
 
