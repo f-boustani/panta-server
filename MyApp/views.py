@@ -132,7 +132,7 @@ def login(request):
 				lst=[]
 				
 				for pro in Profile.objects.filter(username__iexact=username):
-			
+	
 					project=Projects.objects.get(id__iexact=pro.projectID)
 					project.pDeadline=str(project.pDeadline)
 					
@@ -140,8 +140,10 @@ def login(request):
 					for t in Task.objects.filter(Q(projectID__iexact=pro.projectID) & Q(username__iexact=username)):
 						t.deadline=str(t.deadline)
 						task.append(t.as_json())
-					lst.append((project.as_json(),task))
-
+					temp=project.as_json()
+					temp["tasks"]=task
+					lst.append(tmp)
+				
 				"""
 				for pro in Profile.objects.filter(username__iexact=username):
 					project=Projects.objects.get(id__iexact=pro.projectID)
@@ -220,8 +222,10 @@ def view_profile(request):
 			for t in Task.objects.filter(Q(projectID__iexact=pro.projectID) & Q(username__iexact=username)):
 				t.deadline=str(t.deadline)
 				task.append(t.as_json())
-			lst.append((project.as_json(),task))
-
+			temp=project.as_json()
+			temp["tasks"]=task
+			lst.append(tmp)
+			
 			
 		results["projects"]=lst
 		print json.dumps(results)
