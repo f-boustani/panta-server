@@ -829,10 +829,123 @@ def deleteProject(request):
 
 def editProject(request):
 
-	pass
+	print "-------------------------------------------"
+	t=datetime.datetime.now()
+	print t.isoformat()
+
+	if request.method == "POST":
+		print 'POST-edit project'
+		projectID=int(unicodedata.normalize('NFKD', request.POST['projectID']).encode('utf-8','ignore'));
+		projectName=unicodedata.normalize('NFKD', request.POST['projectName']).encode('utf-8','ignore');
+		project_info=unicodedata.normalize('NFKD', request.POST['project_info']).encode('utf-8','ignore');
+		year=unicodedata.normalize('NFKD', request.POST['year']).encode('utf-8','ignore');
+		month=unicodedata.normalize('NFKD', request.POST['month']).encode('utf-8','ignore');
+		day=unicodedata.normalize('NFKD', request.POST['day']).encode('utf-8','ignore');
+		
+		pDeadline= datetime.date(int(year),int(month),int(day))
+		results ={}
+		print projectID
+		
+		Projects.objects.get(id__exact=projectID).update(projectName=projectName,project_info=project_info,pDeadline=pDeadline)	
+
+		results["successful"]="true"
+
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		return response
+
+			
+	elif request.method == "OPTIONS":
+		print '##############OPTIONS###########'
+		results ={}
+		results["successful"]="false"
+		results["mode"]="option mode- editProject"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+	elif request.method == "GET":
+		print "GET MODE"
+		results ={}
+		results["successful"]="false"
+		results["mode"]="get mode - editProject"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+
+	else:
+		return HttpResponseBadRequest()
+	
 
 
 
 def editTask(request):
 
-	pass
+	print "-------------------------------------------"
+	t=datetime.datetime.now()
+	print t.isoformat()
+
+	if request.method == "POST":
+		print 'POST-edit task'
+		taskID=int(unicodedata.normalize('NFKD', request.POST['taskID']).encode('utf-8','ignore'));
+		taskName=unicodedata.normalize('NFKD', request.POST['taskName']).encode('utf-8','ignore');
+		task_info=unicodedata.normalize('NFKD', request.POST['task_info']).encode('utf-8','ignore');
+		year=unicodedata.normalize('NFKD', request.POST['year']).encode('utf-8','ignore');
+		month=unicodedata.normalize('NFKD', request.POST['month']).encode('utf-8','ignore');
+		day=unicodedata.normalize('NFKD', request.POST['day']).encode('utf-8','ignore');
+		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
+		
+		deadline= datetime.date(int(year),int(month),int(day))
+		results ={}
+		print projectID
+		
+		Projects.objects.get(id__exact=taskID).update(taskName=taskName,task_info=task_info,deadline=deadline,username=username)	
+
+		results["successful"]="true"
+
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		return response
+
+			
+	elif request.method == "OPTIONS":
+		print '##############OPTIONS###########'
+		results ={}
+		results["successful"]="false"
+		results["mode"]="option mode- edit task"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+	elif request.method == "GET":
+		print "GET MODE"
+		results ={}
+		results["successful"]="false"
+		results["mode"]="get mode - edit task"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+
+	else:
+		return HttpResponseBadRequest()
+	
