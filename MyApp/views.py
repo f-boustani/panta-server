@@ -223,6 +223,7 @@ def view_profile(request):
 				t.deadline=str(t.deadline)
 				task.append(t.as_json())
 			temp=project.as_json()
+			del temp["pDeadline"]
 			temp["tasks"]=task
 			lst.append(temp)
 			
