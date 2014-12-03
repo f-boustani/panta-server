@@ -156,7 +156,6 @@ def login(request):
 						task.append(tmp1)
 					temp=project.as_json()
 					del temp["pDeadline"]
-					del temp["pDeadline"]
 					del temp["progress"]
 					del temp["managerName"]
 					del temp["managerUser"]
