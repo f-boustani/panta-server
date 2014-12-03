@@ -919,7 +919,12 @@ def editTask(request):
 			results ={}
 			print projectID
 			
-			Task.objects.get(id__exact=taskID).update(taskName=taskName,task_info=task_info,deadline=deadline,username=username)	
+			t=Task.objects.get(id__exact=taskID)
+			t.taskName=taskName
+			t.task_info=task_info
+			t.deadline=deadline
+			t.username=username
+			t.save()
 
 			results["successful"]="true"
 
