@@ -46,6 +46,7 @@ def register(request):
 		results["successful"]="true"
 		results["user_info"]= Login.objects.get(username__iexact=username).as_json()	
 
+		"""
 		
 		lst=[]
 		
@@ -76,7 +77,7 @@ def register(request):
 			lst.append(temp)
 			
 		results["projects"]=lst	
-		
+		"""
 
 
 		print json.dumps(results)
@@ -136,7 +137,7 @@ def login(request):
 				results["user_info"]=Login.objects.get(username__iexact=username).as_json()	
 
 
-			
+				"""
 				lst=[]
 				
 				for pro in Profile.objects.filter(username__iexact=username):
@@ -166,14 +167,6 @@ def login(request):
 					lst.append(temp)
 				
 				"""
-				for pro in Profile.objects.filter(username__iexact=username):
-					project=Projects.objects.get(id__iexact=pro.projectID)
-					project.pDeadline=str(project.pDeadline)
-					lst.append(project.as_json())
-				
-				"""
-				results["projects"]=lst
-			
 
 				print json.dumps(results)
 				response = HttpResponse(json.dumps(results), content_type="application/json")
@@ -266,6 +259,7 @@ def view_profile(request):
 			
 			
 		results["projects"]=lst
+		results["username"]=username
 		print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
 		response['Access-Control-Allow-Origin'] = "*"
