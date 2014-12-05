@@ -840,6 +840,7 @@ def editProject(request):
 		pDeadline= datetime.date(int(year),int(month),int(day))
 		results ={}
 		print projectID
+		print projectName
 		
 		p=Projects.objects.get(id__exact=projectID)
 		p.projectName=projectName
