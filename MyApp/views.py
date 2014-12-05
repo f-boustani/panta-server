@@ -841,6 +841,7 @@ def editProject(request):
 		results ={}
 		print projectID
 		print projectName
+		print len(projectName)
 		
 		p=Projects.objects.get(id__exact=projectID)
 		p.projectName=projectName
