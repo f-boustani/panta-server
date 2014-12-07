@@ -26,7 +26,7 @@ def register(request):
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		password=unicodedata.normalize('NFKD', request.POST['password']).encode('utf-8','ignore');
 		name=unicodedata.normalize('NFKD', request.POST['name']).encode('utf-8','ignore');
-		print name
+
 		if(Login.objects.filter(username__iexact=username).exists()):
 			results ={}
 			results["successful"]="false"
@@ -45,39 +45,6 @@ def register(request):
 		results ={}
 		results["successful"]="true"
 		results["user_info"]= Login.objects.get(username__iexact=username).as_json()	
-
-		"""
-		
-		lst=[]
-		
-		for pro in Profile.objects.filter(username__iexact=username):
-	
-			project=Projects.objects.get(id__iexact=pro.projectID)
-			project.pDeadline=str(project.pDeadline)
-			
-			task=[]
-			for t in Task.objects.filter(Q(projectID__iexact=pro.projectID) & Q(username__iexact=username)):
-				t.deadline=str(t.deadline)
-				tmp1=t.as_json()
-				del tmp1["task_info"]
-				del tmp1["deadline"]
-				del tmp1["status"]
-				del tmp1["projectID"]
-				del tmp1["username"]
-				task.append(tmp1)
-
-			temp=project.as_json()
-			del temp["pDeadline"]
-			del temp["progress"]
-			del temp["managerName"]
-			del temp["managerUser"]
-			del temp["project_info"]
-				
-			temp["tasks"]=task
-			lst.append(temp)
-			
-		results["projects"]=lst	
-		"""
 
 
 		print json.dumps(results)
@@ -247,8 +214,6 @@ def view_profile(request):
 			temp=project.as_json()
 			del temp["pDeadline"]
 			del temp["progress"]
-			del temp["managerName"]
-			del temp["managerUser"]
 			del temp["project_info"]
 			
 			
