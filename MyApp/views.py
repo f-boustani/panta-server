@@ -438,7 +438,7 @@ def taskInfo(request):
 		results["successful"]="true"
 		task_info=Task.objects.get(id__iexact=taskID)
 		username=task_info.username
-		name=Login.objects.get(username__iexact=username)
+		name=Login.objects.get(username__iexact=username).name
 		task_info.deadline=str(task_info.deadline)
 		t=task_info.as_json()
 		t["name"]=name
