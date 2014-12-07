@@ -472,9 +472,13 @@ def taskInfo(request):
 		results ={}
 		results["successful"]="true"
 		task_info=Task.objects.get(id__iexact=taskID)
+		username=task_info.username
+		name=Login.objects.get(username__iexact=username)
 		task_info.deadline=str(task_info.deadline)
+		t=task_info.as_json()
+		t["name"]=name
 		
-		results["taskInfo"]=task_info.as_json()
+		results["taskInfo"]=t
 			
 		print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
