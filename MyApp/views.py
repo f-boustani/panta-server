@@ -16,11 +16,6 @@ task_counter=0
 def register(request):
 	print "-------------------------------------------"
 	print datetime.datetime.now().strftime("%y-%m-%d %H:%M:%S")
-	#from_zone = tz.gettz('UTC')
-	#to_zone = tz.gettz('Asia/Tehran')
-	#utc = datetime.datetime.now()
-	#lcl = utc.astimezone(to_zone)
-	#print khayyam.JalaliDatetime.now().strftime("%C")
 	if request.method == "POST":
 		print 'register- post mode'
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
@@ -104,37 +99,6 @@ def login(request):
 				results["user_info"]=Login.objects.get(username__iexact=username).as_json()	
 
 
-				"""
-				lst=[]
-				
-				for pro in Profile.objects.filter(username__iexact=username):
-	
-					project=Projects.objects.get(id__iexact=pro.projectID)
-					project.pDeadline=str(project.pDeadline)
-					
-					task=[]
-					for t in Task.objects.filter(Q(projectID__iexact=pro.projectID) & Q(username__iexact=username)):
-						t.deadline=str(t.deadline)
-						tmp1=t.as_json()
-						del tmp1["task_info"]
-						del tmp1["deadline"]
-						del tmp1["status"]
-						del tmp1["projectID"]
-						del tmp1["username"]
-						task.append(tmp1)
-					temp=project.as_json()
-					del temp["pDeadline"]
-					del temp["progress"]
-					del temp["managerName"]
-					del temp["managerUser"]
-					del temp["project_info"]
-			
-
-					temp["tasks"]=task
-					lst.append(temp)
-				
-				"""
-
 				print json.dumps(results)
 				response = HttpResponse(json.dumps(results), content_type="application/json")
 				response['Access-Control-Allow-Origin'] = "*"
@@ -205,14 +169,12 @@ def view_profile(request):
 				t.deadline=str(t.deadline)
 				tmp1=t.as_json()
 				del tmp1["task_info"]
-				del tmp1["deadline"]
 				del tmp1["status"]
 				del tmp1["projectID"]
 				del tmp1["username"]
 				task.append(tmp1)
 
 			temp=project.as_json()
-			del temp["pDeadline"]
 			del temp["progress"]
 			del temp["project_info"]
 			
@@ -945,3 +907,115 @@ def editTask(request):
 	else:
 		return HttpResponseBadRequest()
 	
+
+def deleteMember(request):
+
+	print "-------------------------------------------"
+	t=datetime.datetime.now()
+	print t.isoformat()
+
+	if request.method == "POST":
+		print 'POST-delete member'
+		projectID=int(unicodedata.normalize('NFKD', request.POST['projectID']).encode('utf-8','ignore'));
+		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
+		
+		print "projectID: ",projectID
+		print "username: ", username
+
+		Profile.objects.get(projectID=projectID,username=username).delete()
+		
+		for task in Task.objects.filter(projectID__exact=projectID):
+			if task.username==username:
+				task.delete()
+
+		results["successful"]="true"
+
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		return response
+
+			
+	elif request.method == "OPTIONS":
+		print '##############OPTIONS###########'
+		results ={}
+		results["successful"]="false"
+		results["mode"]="option mode- deleteMember"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+	elif request.method == "GET":
+		print "GET MODE"
+		results ={}
+		results["successful"]="false"
+		results["mode"]="get mode - deleteMember"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+
+	else:
+		return HttpResponseBadRequest()
+
+
+def deleteTask(request):
+
+	print "-------------------------------------------"
+	t=datetime.datetime.now()
+	print t.isoformat()
+
+	if request.method == "POST":
+		print 'POST-delete task'
+		taskID=int(unicodedata.normalize('NFKD', request.POST['taskID']).encode('utf-8','ignore'));
+		
+		print "taskID: ", taskID
+
+		Task.objects.get(taskID=taskID).delete()
+		
+		results["successful"]="true"
+
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		return response
+
+			
+	elif request.method == "OPTIONS":
+		print '##############OPTIONS###########'
+		results ={}
+		results["successful"]="false"
+		results["mode"]="option mode- delete task"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+	elif request.method == "GET":
+		print "GET MODE"
+		results ={}
+		results["successful"]="false"
+		results["mode"]="get mode - delete task"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+
+	else:
+		return HttpResponseBadRequest()
+
