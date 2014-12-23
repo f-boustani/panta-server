@@ -222,7 +222,7 @@ def view_profile(request):
 	else:
 		return HttpResponseBadRequest()
 
-    
+'''    
 
 def projectInfo(request):
 
@@ -374,6 +374,79 @@ def project_tasks(request):
 		results ={}
 		results["successful"]="false"
 		results["mode"]="get mode - project_tasks"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+
+	else:
+		return HttpResponseBadRequest()
+
+'''
+
+def project_all(request):
+
+	print "-------------------------------------------"
+	t=datetime.datetime.now()
+	print t.isoformat()
+
+	if request.method == "POST":
+		print 'POST-project all'
+		
+		projectID=int(unicodedata.normalize('NFKD', request.POST['projectID']).encode('utf-8','ignore'));
+
+		results ={}
+		results["successful"]="true"
+
+		#data for project info
+		project_info=Projects.objects.get(id__iexact=projectID)
+		project_info.pDeadline=str(project_info.pDeadline)
+		results["projectInfo"]=project_info.as_json()
+
+		#data for project's users
+		lst=[]
+		for pro in Profile.objects.filter(projectID__iexact=projectID):
+			lst.append(Login.objects.get(username__iexact=pro.username).as_json())
+		
+		results["project_users"]=lst
+		
+
+		#data for project's tasks
+		lst2=[]
+		for task in Task.objects.filter(projectID__iexact=projectID):
+			task.deadline = str(task.deadline)
+			lst2.append(task.as_json())
+		
+		results["project_tasks"]=lst2
+			
+			
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		return response
+		
+	elif request.method == "OPTIONS":
+		print '##############OPTIONS###########'
+		results ={}
+		results["successful"]="false"
+		results["mode"]="option mode - peoject all"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+	elif request.method == "GET":
+		print "GET MODE"
+		results ={}
+		results["successful"]="false"
+		results["mode"]="get mode - project all"
 		print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
 		response['Access-Control-Allow-Origin'] = "*"
