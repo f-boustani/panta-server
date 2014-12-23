@@ -995,6 +995,7 @@ def deleteMember(request):
 		print "projectID: ",projectID
 		print "username: ", username
 
+		results={}
 		Profile.objects.get(projectID__exact=projectID,username__exact=username).delete()
 		
 		for task in Task.objects.filter(projectID__exact=projectID):
@@ -1053,6 +1054,7 @@ def deleteTask(request):
 		print "taskID: ", taskID
 
 		Task.objects.get(id__iexact=taskID).delete()
+		results={}
 		
 		results["successful"]="true"
 
