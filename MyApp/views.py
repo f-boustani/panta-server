@@ -1108,7 +1108,7 @@ def changeStatus(request):
 		print 'POST-change status'
 		taskID=int(unicodedata.normalize('NFKD', request.POST['taskID']).encode('utf-8','ignore'));
 		projectID=int(unicodedata.normalize('NFKD', request.POST['projectID']).encode('utf-8','ignore'));
-		status=unicodedata.normalize('NFKD', request.POST['status']).encode('utf-8','ignore'));
+		status=unicodedata.normalize('NFKD', request.POST['status']).encode('utf-8','ignore');
 		
 		print "taskID: ", taskID
 		print "projectID: ", projectID
