@@ -1,7 +1,7 @@
 from django.http import HttpResponse,HttpResponseBadRequest
 from django.shortcuts import render_to_response
 from django.template import Context
-import datetime
+from datetime import datetime,timedelta
 import time
 import json
 import unicodedata
@@ -15,7 +15,9 @@ task_counter=0
 
 def register(request):
 	print "-------------------------------------------"
-	print datetime.datetime.now().strftime("%y-%m-%d %H:%M:%S")
+	t=datetime.utcnow()+timedelta(minutes=210)
+	print t.isoformat()
+
 	if request.method == "POST":
 		print 'register- post mode'
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
@@ -81,7 +83,7 @@ def register(request):
 def login(request):
 
 	print "-------------------------------------------"
-	t=datetime.datetime.now()
+	t=datetime.utcnow()+timedelta(minutes=210)
 	print t.isoformat()
      
 	if request.method == "POST":
@@ -148,7 +150,7 @@ def login(request):
 def view_profile(request):
 
 	print "-------------------------------------------"
-	t=datetime.datetime.now()
+	t=datetime.utcnow()+timedelta(minutes=210)
 	print t.isoformat()
 
 	if request.method == "POST":
@@ -390,7 +392,7 @@ def project_tasks(request):
 def project_all(request):
 
 	print "-------------------------------------------"
-	t=datetime.datetime.now()
+	t=datetime.utcnow()+timedelta(minutes=210)
 	print t.isoformat()
 
 	if request.method == "POST":
@@ -462,7 +464,7 @@ def project_all(request):
 def taskInfo(request):
 
 	print "-------------------------------------------"
-	t=datetime.datetime.now()
+	t=datetime.utcnow()+timedelta(minutes=210)
 	print t.isoformat()
 
 	if request.method == "POST":
@@ -520,7 +522,7 @@ def taskInfo(request):
 def addMember(request):
 
 	print "-------------------------------------------"
-	t=datetime.datetime.now()
+	t=datetime.utcnow()+timedelta(minutes=210)
 	print t.isoformat()
 
 	if request.method == "POST":
@@ -605,7 +607,7 @@ def addMember(request):
 def addProject(request):
 
 	print "-------------------------------------------"
-	t=datetime.datetime.now()
+	t=datetime.utcnow()+timedelta(minutes=210)
 	print t.isoformat()
 
 	if request.method == "POST":
@@ -677,7 +679,7 @@ def addProject(request):
 def addTask(request):
 
 	print "-------------------------------------------"
-	t=datetime.datetime.now()
+	t=datetime.utcnow()+timedelta(minutes=210)
 	print t.isoformat()
 
 	if request.method == "POST":
@@ -770,7 +772,7 @@ def addTask(request):
 def deleteProject(request):
 
 	print "-------------------------------------------"
-	t=datetime.datetime.now()
+	t=datetime.utcnow()+timedelta(minutes=210)
 	print t.isoformat()
 
 	if request.method == "POST":
@@ -829,7 +831,7 @@ def deleteProject(request):
 def editProject(request):
 
 	print "-------------------------------------------"
-	t=datetime.datetime.now()
+	t=datetime.utcnow()+timedelta(minutes=210)
 	print t.isoformat()
 
 	if request.method == "POST":
@@ -897,7 +899,7 @@ def editProject(request):
 def editTask(request):
 
 	print "-------------------------------------------"
-	t=datetime.datetime.now()
+	t=datetime.utcnow()+timedelta(minutes=210)
 	print t.isoformat()
 
 	if request.method == "POST":
@@ -984,7 +986,7 @@ def editTask(request):
 def deleteMember(request):
 
 	print "-------------------------------------------"
-	t=datetime.datetime.now()
+	t=datetime.utcnow()+timedelta(minutes=210)
 	print t.isoformat()
 
 	if request.method == "POST":
@@ -1044,7 +1046,7 @@ def deleteMember(request):
 def deleteTask(request):
 
 	print "-------------------------------------------"
-	t=datetime.datetime.now()
+	t=datetime.utcnow()+timedelta(minutes=210)
 	print t.isoformat()
 
 	if request.method == "POST":
@@ -1093,4 +1095,80 @@ def deleteTask(request):
 
 	else:
 		return HttpResponseBadRequest()
+
+
+
+def changeStatus(request):
+
+	print "-------------------------------------------"
+	t=datetime.utcnow()+timedelta(minutes=210)
+	print t.isoformat()
+
+	if request.method == "POST":
+		print 'POST-change status'
+		taskID=int(unicodedata.normalize('NFKD', request.POST['taskID']).encode('utf-8','ignore'));
+		projectID=int(unicodedata.normalize('NFKD', request.POST['projectID']).encode('utf-8','ignore'));
+		status=unicodedata.normalize('NFKD', request.POST['status']).encode('utf-8','ignore'));
+		
+		print "taskID: ", taskID
+		print "projectID: ", projectID
+		print "status: ", status
+
+		t=Task.objects.get(id__exact=taskID)
+		t.status=status
+		t.save()
+
+
+		#accepted by manager
+		if status=='3':
+
+			a=Task.objects.filter(projectID=projectID)
+			b=Task.objects.filter(projectID=projectID,status='3')
+			progress=(b/a)*100
+			p=Projects.objects.get(id__exact=projectID)
+			p.progress=progress
+			p.save()
+			
+			
+
+		results={}
+		
+		results["successful"]="true"
+
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		return response
+
+			
+	elif request.method == "OPTIONS":
+		print '##############OPTIONS###########'
+		results ={}
+		results["successful"]="false"
+		results["mode"]="option mode- delete task"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+	elif request.method == "GET":
+		print "GET MODE"
+		results ={}
+		results["successful"]="false"
+		results["mode"]="get mode - delete task"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+
+	else:
+		return HttpResponseBadRequest()
+
 
