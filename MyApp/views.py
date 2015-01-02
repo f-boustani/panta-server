@@ -1172,3 +1172,130 @@ def changeStatus(request):
 		return HttpResponseBadRequest()
 
 
+def changePassword(request):
+	
+	print "-------------------------------------------"
+	t=datetime.utcnow()+timedelta(minutes=210)
+	print t.isoformat()
+
+	if request.method == "POST":
+		print 'POST-change password'
+		newPassword=int(unicodedata.normalize('NFKD', request.POST['taskID']).encode('utf-8','ignore'));
+		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
+		
+		print "status: ", status
+
+		u=Login.objects.get(username__iexact=username)
+		u.password=newPassword
+		u.save()	
+
+		results={}
+		
+		results["successful"]="true"
+
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		return response
+
+			
+	elif request.method == "OPTIONS":
+		print '##############OPTIONS###########'
+		results ={}
+		results["successful"]="false"
+		results["mode"]="option mode- change password"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+	elif request.method == "GET":
+		print "GET MODE"
+		results ={}
+		results["successful"]="false"
+		results["mode"]="get mode - change password"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+
+	else:
+		return HttpResponseBadRequest()
+
+
+
+
+def deleteAccount(request):
+	
+	print "-------------------------------------------"
+	t=datetime.utcnow()+timedelta(minutes=210)
+	print t.isoformat()
+
+	if request.method == "POST":
+		print 'POST-delete account'
+		username=int(unicodedata.normalize('NFKD', request.POST['username__iexact']).encode('utf-8','ignore'));
+		
+		print "username: ", username
+
+		Login.objects.get(username__iexact=username).delete()
+		Profile.objects.filter(username__iexact=username).delete()
+		Task.objects.filter(username__iexact=username).delete()
+		
+		for pro in Projects.objects.filter(managerUser__iexact=username):
+			Profile.objects.filter(projectID=pro.projectID).delete()
+			Task.objects.filter(projectID=pro.projectID).delete()
+			pro.delete()
+
+
+		results={}
+		
+		results["successful"]="true"
+
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		return response
+
+			
+	elif request.method == "OPTIONS":
+		print '##############OPTIONS###########'
+		results ={}
+		results["successful"]="false"
+		results["mode"]="option mode- delete account"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+	elif request.method == "GET":
+		print "GET MODE"
+		results ={}
+		results["successful"]="false"
+		results["mode"]="get mode - delete account"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+
+	else:
+		return HttpResponseBadRequest()
+
+
+
+
+
+		
