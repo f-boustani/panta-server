@@ -1,8 +1,7 @@
 from django.http import HttpResponse,HttpResponseBadRequest
 from django.shortcuts import render_to_response
 from django.template import Context
-from datetime import datetime,timedelta
-import datetime
+from datetime import datetime,timedelta,date
 import time
 import json
 import unicodedata
@@ -615,7 +614,7 @@ def addProject(request):
 		month=unicodedata.normalize('NFKD', request.POST['month']).encode('utf-8','ignore');
 		day=unicodedata.normalize('NFKD', request.POST['day']).encode('utf-8','ignore');
 		
-		pDeadline= datetime.date(int(year),int(month),int(day))
+		pDeadline= date(int(year),int(month),int(day))
 
 
 		managerName=Login.objects.get(username__iexact=username).name
@@ -687,7 +686,7 @@ def addTask(request):
 		month=unicodedata.normalize('NFKD', request.POST['month']).encode('utf-8','ignore');
 		day=unicodedata.normalize('NFKD', request.POST['day']).encode('utf-8','ignore');
 		
-		deadline= datetime.date(int(year),int(month),int(day))
+		deadline= date(int(year),int(month),int(day))
 		print Login.objects.filter(username__iexact=username).exists()
 		if not(Login.objects.filter(username__iexact=username).exists()):
 			print "username doesnt exist"
@@ -838,7 +837,7 @@ def editProject(request):
 		month=unicodedata.normalize('NFKD', request.POST['month']).encode('utf-8','ignore');
 		day=unicodedata.normalize('NFKD', request.POST['day']).encode('utf-8','ignore');
 		
-		pDeadline= datetime.date(int(year),int(month),int(day))
+		pDeadline= date(int(year),int(month),int(day))
 		results ={}
 		print projectID
 		print projectName
@@ -909,7 +908,7 @@ def editTask(request):
 		day=unicodedata.normalize('NFKD', request.POST['day']).encode('utf-8','ignore');
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		
-		deadline= datetime.date(int(year),int(month),int(day))
+		deadline= date(int(year),int(month),int(day))
 
 		added=0
 		for i in Profile.objects.filter(projectID__iexact=projectID):
