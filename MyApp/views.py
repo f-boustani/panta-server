@@ -1,17 +1,13 @@
 from django.http import HttpResponse,HttpResponseBadRequest
 from django.shortcuts import render_to_response
 from django.template import Context
-from datetime import datetime,timedelta,date
+from datetime import datetime,timedelta
+import datetime
 import time
 import json
 import unicodedata
 from django.db.models import Q
 from MyApp.models import *
-#import khayyam
-#from dateutil import tz
-project_counter=0
-task_counter=0
-
 
 def register(request):
 	print "-------------------------------------------"
@@ -623,8 +619,7 @@ def addProject(request):
 
 
 		managerName=Login.objects.get(username__iexact=username).name
-		#print project_counter
-		#project_counter += 1
+		
 		results ={}
 		results["successful"]="true"
 
