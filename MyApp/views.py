@@ -1174,7 +1174,7 @@ def changePassword(request):
 
 	if request.method == "POST":
 		print 'POST-change password'
-		newPassword=int(unicodedata.normalize('NFKD', request.POST['taskID']).encode('utf-8','ignore'));
+		newPassword=int(unicodedata.normalize('NFKD', request.POST['password']).encode('utf-8','ignore'));
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		
 		print "status: ", status
