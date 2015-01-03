@@ -1176,8 +1176,6 @@ def changePassword(request):
 		print 'POST-change password'
 		newPassword=unicodedata.normalize('NFKD', request.POST['password']).encode('utf-8','ignore');
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
-		
-		print "status: ", status
 
 		u=Login.objects.get(username__iexact=username)
 		u.password=newPassword
