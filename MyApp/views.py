@@ -1234,7 +1234,7 @@ def deleteAccount(request):
 
 	if request.method == "POST":
 		print 'POST-delete account'
-		username=unicodedata.normalize('NFKD', request.POST['username__iexact']).encode('utf-8','ignore');
+		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		
 		print "username: ", username
 
