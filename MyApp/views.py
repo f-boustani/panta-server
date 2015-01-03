@@ -1234,13 +1234,17 @@ def deleteAccount(request):
 
 	if request.method == "POST":
 		print 'POST-delete account'
-		username=int(unicodedata.normalize('NFKD', request.POST['username__iexact']).encode('utf-8','ignore'));
+		username=unicodedata.normalize('NFKD', request.POST['username__iexact']).encode('utf-8','ignore');
 		
 		print "username: ", username
 
 		Login.objects.get(username__iexact=username).delete()
-		Profile.objects.filter(username__iexact=username).delete()
-		Task.objects.filter(username__iexact=username).delete()
+
+		for obj in Profile.objects.filter(username__iexact=username):
+			obj.delete()
+		
+		for t in Task.objects.filter(username__iexact=username):
+			t.delete()
 		
 		for pro in Projects.objects.filter(managerUser__iexact=username):
 			Profile.objects.filter(projectID=pro.projectID).delete()
