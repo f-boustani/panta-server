@@ -722,7 +722,7 @@ def addTask(request):
 			results ={}
 			results["successful"]="true"
 
-			newTask=Task(taskName=taskName,task_info=task_info, projectID=projectID,username=username,deadline=deadline,status='1')
+			newTask=Task(taskName=taskName,task_info=task_info, projectID=projectID,username=username,deadline=deadline,status='0')
 			newTask.save()
 
 			
@@ -1114,7 +1114,7 @@ def changeStatus(request):
 
 
 		#accepted by manager
-		if status=='3':
+		if status=='2':
 
 			a=Task.objects.filter(projectID=projectID)
 			b=Task.objects.filter(projectID=projectID,status='3')

@@ -7,9 +7,9 @@ class Category(models.Model):
         return self.name
 	
 task_CHOICES =(
-	('1','Doing'),
-	('2','Done by user'),
-        ('3','accept by manager'),
+	('0','Doing'),
+	('1','Done by user'),
+        ('2','accept by manager'),
 )
 
 class Login(models.Model):
