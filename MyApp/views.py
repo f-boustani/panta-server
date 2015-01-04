@@ -1118,7 +1118,7 @@ def changeStatus(request):
 
 			a=Task.objects.filter(projectID=projectID)
 			b=Task.objects.filter(projectID=projectID,status='2')
-			progress=(len(b)/len(a))*100
+			progress=(float(len(b))/float(len(a)))*100
 			p=Projects.objects.get(id__exact=projectID)
 			p.progress=progress
 			p.save()
