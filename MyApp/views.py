@@ -1126,7 +1126,8 @@ def changeStatus(request):
 			
 
 		results={}
-		
+		print "new progress: ",Projects.objects.get(id__exact=projectID).progress
+
 		results["successful"]="true"
 
 		print json.dumps(results)
