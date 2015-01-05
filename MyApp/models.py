@@ -3,20 +3,32 @@ from django.db import models
 
 class Category(models.Model):
     name = models.CharField(max_length=50)
+    class Meta:
+        managed=False
     def __unicode__(self):
         return self.name
+
 	
 task_CHOICES =(
 	('0','Doing'),
 	('1','Done by user'),
-        ('2','accept by manager'),
+    ('2','accept by manager'),
 )
 
+class Gcm_users(object):
+
+    username = models.EmailField()
+    reg_id = text
+    
+        
 class Login(models.Model):
 
     username = models.EmailField()
     password = models.CharField(max_length=100)
     name = models.CharField(max_length=50)
+
+    class Meta:
+        managed=False    
 
     def as_json(self):
             return dict(
@@ -31,6 +43,7 @@ class Profile(models.Model):
 
     class Meta:
         unique_together = ('username','projectID')
+        managed=False
 
     def as_json(self):
             return dict(
@@ -44,6 +57,9 @@ class Projects(models.Model):
     project_info = models.CharField(max_length=5000)
     progress = models.IntegerField(max_length=15)
     pDeadline = models.DateField()
+
+    class Meta:
+        managed=False   
 
     def as_json(self):
             return dict(
@@ -67,6 +83,7 @@ class Task(models.Model):
 
     class Meta:
         unique_together = ('id','username')
+        managed=False
 
     def as_json(self):
             return dict(
@@ -85,6 +102,9 @@ class User_father(models.Model):
     father = models.EmailField()
     position = models.CharField(max_length=50)
     deadline = models.DateField(null=True)
+
+    class Meta:
+        managed=False   
     
     def as_json(self):
             return dict(

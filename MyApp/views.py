@@ -7,6 +7,7 @@ import json
 import unicodedata
 from django.db.models import Q
 from MyApp.models import *
+from gcm import *
 
 def register(request):
 	print "-------------------------------------------"
@@ -1293,6 +1294,62 @@ def deleteAccount(request):
 
 
 
+def gcmDatabase(request):
 
+	print "-------------------------------------------"
+	t=datetime.utcnow()+timedelta(minutes=210)
+	print t.isoformat()
+
+	if request.method == "POST":
+		print 'POST-save to gcm database'
+		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
+		reg_id=unicodedata.normalize('NFKD', request.POST['reg_id']).encode('utf-8','ignore');
+		
+		print "username: ", username
+		print "reg_id: ",reg_id
 
 		
+		new = Gcm_users(username=username,reg_id=reg_id)
+		new.save()
+
+		results={}
+		
+		results["successful"]="true"
+
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		return response
+
+			
+	elif request.method == "OPTIONS":
+		print '##############OPTIONS###########'
+		results ={}
+		results["successful"]="false"
+		results["mode"]="option mode- gcm database"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+	elif request.method == "GET":
+		print "GET MODE"
+		results ={}
+		results["successful"]="false"
+		results["mode"]="get mode - gcm database"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+
+	else:
+		return HttpResponseBadRequest()
+
+

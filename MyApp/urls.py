@@ -25,6 +25,7 @@ urlpatterns = patterns('',
     (r'^deleteMember/$', deleteMember),
     (r'^changeStatus/$', changeStatus),
     (r'^changePassword/$', changePassword),
-    (r'^deleteAccount/$', deleteAccount)
+    (r'^deleteAccount/$', deleteAccount),
+    (r'^gcmDatabase/$', gcmDatabase),
 #    url(r'^admin/', include(admin.site.urls)),
 )
