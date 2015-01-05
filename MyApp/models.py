@@ -15,10 +15,10 @@ task_CHOICES =(
     ('2','accept by manager'),
 )
 
-class Gcm_users(object):
+class Gcm_users(models.Model):
 
     username = models.EmailField()
-    reg_id = text
+    reg_id = models.TextField()
     
         
 class Login(models.Model):
