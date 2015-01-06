@@ -1331,14 +1331,14 @@ def gcmDatabase(request):
 
 	if request.method == "POST":
 		print 'POST-save to gcm database'
-		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
+		#username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		reg_id=unicodedata.normalize('NFKD', request.POST['reg_id']).encode('utf-8','ignore');
 		
-		print "username: ", username
+		#print "username: ", username
 		print "reg_id: ",reg_id
 
 		
-		new = Gcm_users(username=username,reg_id=reg_id)
+		new = Gcm_users(username='fa@y.com',reg_id=reg_id)
 		new.save()
 
 		results={}
