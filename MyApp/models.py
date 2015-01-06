@@ -19,6 +19,8 @@ class Gcm_users(models.Model):
 
     username = models.EmailField()
     reg_id = models.TextField()
+    class Meta:
+        managed=False
     
         
 class Login(models.Model):

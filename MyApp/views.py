@@ -726,6 +726,15 @@ def addTask(request):
 			newTask=Task(taskName=taskName,task_info=task_info, projectID=projectID,username=username,deadline=deadline,status='0')
 			newTask.save()
 
+			#change progress
+			a=Task.objects.filter(projectID=projectID)
+			b=Task.objects.filter(projectID=projectID,status='2')
+			progress=(float(len(b))/float(len(a)))*100
+			p=Projects.objects.get(id__exact=projectID)
+			p.progress=progress
+			p.save()
+			
+
 			
 			print json.dumps(results)
 			response = HttpResponse(json.dumps(results), content_type="application/json")
@@ -1112,6 +1121,26 @@ def changeStatus(request):
 		t=Task.objects.get(id__exact=taskID)
 		t.status=status
 		t.save()
+
+
+		#done by user, must notif the manager
+		if status=='1':
+
+			manager_user=Projects.objects.get(id__exact=projectID).managerUser
+			manager_reg_id=Gcm_users.objects.get(username__iexact=manager_user).reg_id
+			userID=Task.objects.get(id__exact=taskID).username
+
+			message=userID+' done his/her task'
+			
+			#add api key
+			gcm = GCM("AIzaSyCWZBvIjLg0kmBELKsObqostZHx2AZWCvQ")
+
+			data = {'the_message': message, 'param2': 'value2'}
+
+			reg_id = manager_reg_id
+
+			gcm.plaintext_request(registration_id=reg_id, data=data)
+
 
 
 		#accepted by manager
