@@ -1059,7 +1059,17 @@ def deleteTask(request):
 		
 		print "taskID: ", taskID
 
+		projectID=Task.objects.get(id__exact=taskID).projectID
 		Task.objects.get(id__iexact=taskID).delete()
+
+		#change progress
+		a=Task.objects.filter(projectID=projectID)
+		b=Task.objects.filter(projectID=projectID,status='2')
+		progress=(float(len(b))/float(len(a)))*100
+		p=Projects.objects.get(id__exact=projectID)
+		p.progress=progress
+		p.save()
+
 		results={}
 		
 		results["successful"]="true"
@@ -1130,13 +1140,15 @@ def changeStatus(request):
 			manager_reg_id=Gcm_users.objects.get(username__iexact=manager_user).reg_id
 			userID=Task.objects.get(id__exact=taskID).username
 
-			message=userID+' done his/her task'
+			data={}
+			data['message']=userID+' done his/her task'
+			data['task_info']=Task.objects.get(id__exact=taskID).as_json()
+
+			#msg_type=1 ---> task done by user
+			data['msg_type']='1'
 			
 			#add api key
 			gcm = GCM("AIzaSyCWZBvIjLg0kmBELKsObqostZHx2AZWCvQ")
-
-			data = {'the_message': message, 'param2': 'value2'}
-
 			reg_id = manager_reg_id
 
 			gcm.plaintext_request(registration_id=reg_id, data=data)
@@ -1331,14 +1343,14 @@ def gcmDatabase(request):
 
 	if request.method == "POST":
 		print 'POST-save to gcm database'
-		#username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
+		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		reg_id=unicodedata.normalize('NFKD', request.POST['reg_id']).encode('utf-8','ignore');
 		
-		#print "username: ", username
+		print "username: ", username
 		print "reg_id: ",reg_id
 
 		
-		new = Gcm_users(username='fa@y.com',reg_id=reg_id)
+		new = Gcm_users(username=username,reg_id=reg_id)
 		new.save()
 
 		results={}

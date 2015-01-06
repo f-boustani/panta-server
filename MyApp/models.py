@@ -18,7 +18,7 @@ task_CHOICES =(
 class Gcm_users(models.Model):
 
     username = models.EmailField()
-    reg_id = models.TextField()
+    reg_id = models.TextField(primary_key=True)
     class Meta:
         managed=False
     
