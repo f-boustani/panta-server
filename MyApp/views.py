@@ -153,6 +153,7 @@ def view_profile(request):
 		print 'POST-profile'
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		
+		print 'username: ', username
 		results ={}
 		results["successful"]="true"
 		lst=[]
@@ -1142,11 +1143,12 @@ def changeStatus(request):
 			userID=Task.objects.get(id__exact=taskID).username
 
 			message=userID+' done his/her task'
-			task_info=Task.objects.get(id__exact=taskID).as_json()
+			#task_info=Task.objects.get(id__exact=taskID).as_json()
 
 			#msg_type=1 ---> task done by user
-			data={'message':message, 'task_info': task_info, 'msg_type':'1'}
+			#data={'message':message, 'task_info': task_info, 'msg_type':'1'}
 			
+			data={'message':message}
 			#add api key
 			gcm = GCM("AIzaSyCWZBvIjLg0kmBELKsObqostZHx2AZWCvQ")
 			reg_id = manager_reg_id
