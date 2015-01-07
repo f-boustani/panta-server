@@ -1139,7 +1139,6 @@ def changeStatus(request):
 
 			print 'must send notif to manager'
 			manager_user=Projects.objects.get(id__exact=projectID).managerUser
-			manager_reg_id=Gcm_users.objects.get(username__iexact=manager_user).reg_id
 			userID=Task.objects.get(id__exact=taskID).username
 
 			message=userID+' done his/her task'
@@ -1147,19 +1146,23 @@ def changeStatus(request):
 			task_info.deadline=str(task_info.deadline)
 			task_info=task_info.as_json()
 			task_info['managerUser']=manager_user
+			#print 'task_info: ', json.dumps(task_info)
 
-			print 'task_info: ', json.dumps(task_info)
 
-			#msg_type=1 ---> task done by user
-			data={'message':message, 'task_info': json.dumps(task_info), 'msg_type':'1'}
-			
+			for obj in Gcm_users.objects.filter(username__iexact=manager_user):
+					
+				manager_reg_id=obj.reg_id
+				
+				#msg_type=1 ---> task done by user
+				data={'message':message, 'task_info': json.dumps(task_info), 'msg_type':'1'}
+				
 
-			#add api key
-			gcm = GCM("AIzaSyCWZBvIjLg0kmBELKsObqostZHx2AZWCvQ")
-			reg_id = manager_reg_id
+				#add api key
+				gcm = GCM("AIzaSyCWZBvIjLg0kmBELKsObqostZHx2AZWCvQ")
+				reg_id = manager_reg_id
 
-			gcm.plaintext_request(registration_id=reg_id, data=data)
-			print 'notif sent'
+				gcm.plaintext_request(registration_id=reg_id, data=data)
+				print 'notif sent'
 
 
 
@@ -1174,8 +1177,7 @@ def changeStatus(request):
 			p.save()
 			print "new progress: ",Projects.objects.get(id__exact=projectID).progress
 
-			
-			
+				
 
 		results={}
 		
