@@ -1146,6 +1146,7 @@ def changeStatus(request):
 			task_info=Task.objects.get(id__iexact=taskID)
 			task_info.deadline=str(task_info.deadline)
 			task_info=task_info.as_json()
+			task_info['managerUser']=manager_user
 
 			print 'task_info: ', json.dumps(task_info)
 
