@@ -185,7 +185,7 @@ def view_profile(request):
 			
 		results["projects"]=lst
 		results["username"]=username
-		print json.dumps(results)
+		#print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
 		response['Access-Control-Allow-Origin'] = "*"
 		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
