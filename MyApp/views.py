@@ -1136,6 +1136,7 @@ def changeStatus(request):
 		#done by user, must notif the manager
 		if status=='1':
 
+			print 'must send notif to manager'
 			manager_user=Projects.objects.get(id__exact=projectID).managerUser
 			manager_reg_id=Gcm_users.objects.get(username__iexact=manager_user).reg_id
 			userID=Task.objects.get(id__exact=taskID).username
@@ -1152,6 +1153,7 @@ def changeStatus(request):
 			reg_id = manager_reg_id
 
 			gcm.plaintext_request(registration_id=reg_id, data=data)
+			print 'notif sent'
 
 
 
