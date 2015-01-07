@@ -1143,14 +1143,16 @@ def changeStatus(request):
 			userID=Task.objects.get(id__exact=taskID).username
 
 			message=userID+' done his/her task'
-			task_info=Task.objects.get(id__exact=taskID).as_json()
+			task_info=Task.objects.get(id__iexact=taskID)
+			task_info.deadline=str(task_info.deadline)
+			task_info=task_info.as_json()
 
 			print 'task_info: ', json.dumps(task_info)
 
 			#msg_type=1 ---> task done by user
 			data={'message':message, 'task_info': json.dumps(task_info), 'msg_type':'1'}
 			
-			#data={'message':message}
+
 			#add api key
 			gcm = GCM("AIzaSyCWZBvIjLg0kmBELKsObqostZHx2AZWCvQ")
 			reg_id = manager_reg_id
