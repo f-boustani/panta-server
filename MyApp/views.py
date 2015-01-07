@@ -1165,12 +1165,13 @@ def changeStatus(request):
 			p=Projects.objects.get(id__exact=projectID)
 			p.progress=progress
 			p.save()
+			print "new progress: ",Projects.objects.get(id__exact=projectID).progress
+
 			
 			
 
 		results={}
-		print "new progress: ",Projects.objects.get(id__exact=projectID).progress
-
+		
 		results["successful"]="true"
 
 		print json.dumps(results)
