@@ -397,6 +397,7 @@ def project_all(request):
 		
 		projectID=int(unicodedata.normalize('NFKD', request.POST['projectID']).encode('utf-8','ignore'));
 
+		print 'projectID: ',projectID
 		results ={}
 		results["successful"]="true"
 
@@ -422,7 +423,7 @@ def project_all(request):
 		results["project_tasks"]=lst2
 			
 			
-		print json.dumps(results)
+		#print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
 		response['Access-Control-Allow-Origin'] = "*"
 		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
@@ -1139,9 +1140,10 @@ def changeStatus(request):
 
 			print 'must send notif to manager'
 			manager_user=Projects.objects.get(id__exact=projectID).managerUser
-			userID=Task.objects.get(id__exact=taskID).username
+			user_id=Task.objects.get(id__exact=taskID).username
+			name=Login.objects.get(username__iexact=user_id).name
 
-			message=userID+' done his/her task'
+			message=name+' done his/her task'
 			task_info=Task.objects.get(id__iexact=taskID)
 			task_info.deadline=str(task_info.deadline)
 			task_info=task_info.as_json()
