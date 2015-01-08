@@ -1407,3 +1407,61 @@ def gcmDatabase(request):
 		return HttpResponseBadRequest()
 
 
+def signOut(request):
+
+	# whene user sign out, clear the gcm record
+	print "-------------------------------------------"
+	t=datetime.utcnow()+timedelta(minutes=210)
+	print t.isoformat()
+
+	if request.method == "POST":
+		print 'POST-sign out'
+		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
+		reg_id=unicodedata.normalize('NFKD', request.POST['reg_id']).encode('utf-8','ignore');
+		
+		print "username: ", username
+		print "reg_id: ",reg_id
+
+		
+		Gcm_users.objects.get(username__iexact=username,reg_id__iexact=reg_id).delete()
+
+		results={}
+		
+		results["successful"]="true"
+
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		return response
+
+			
+	elif request.method == "OPTIONS":
+		print '##############OPTIONS###########'
+		results ={}
+		results["successful"]="false"
+		results["mode"]="option mode-sign out"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+	elif request.method == "GET":
+		print "GET MODE"
+		results ={}
+		results["successful"]="false"
+		results["mode"]="get mode - sign out"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+
+	else:
+		return HttpResponseBadRequest()
+

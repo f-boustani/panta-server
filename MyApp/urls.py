@@ -10,7 +10,7 @@ urlpatterns = patterns('',
     (r'^login/$', login),
     (r'^view_profile/$', view_profile),
     (r'^project_all/$', project_all),
-    
+    #url(r'^admin/', include(admin.site.urls)),
     #(r'^projectInfo/$', projectInfo),
     #(r'^project_users/$', project_users),
     #(r'^project_tasks/$', project_tasks),
@@ -27,5 +27,5 @@ urlpatterns = patterns('',
     (r'^changePassword/$', changePassword),
     (r'^deleteAccount/$', deleteAccount),
     (r'^gcmDatabase/$', gcmDatabase),
-#    url(r'^admin/', include(admin.site.urls)),
+    (r'^signOut/$', signOut)
 )
