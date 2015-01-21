@@ -58,7 +58,7 @@ class Projects(models.Model):
     managerUser = models.EmailField()
     project_info = models.CharField(max_length=5000)
     progress = models.IntegerField(max_length=15)
-    pDeadline = models.DateField()
+    pDeadline = models.DateTimeField()
 
     class Meta:
         managed=False   
@@ -80,7 +80,7 @@ class Task(models.Model):
     task_info = models.CharField(max_length=5000)
     username = models.EmailField()
     projectID = models.IntegerField(max_length=15)
-    deadline = models.DateField(null=True)
+    deadline = models.DateTimeField(null=True)
     status = models.CharField(max_length=1, choices=task_CHOICES)
 
     class Meta:
@@ -103,7 +103,7 @@ class User_father(models.Model):
     projectID = models.IntegerField(max_length=15)
     father = models.EmailField()
     position = models.CharField(max_length=50)
-    deadline = models.DateField(null=True)
+    deadline = models.DateTimeField(null=True)
 
     class Meta:
         managed=False   

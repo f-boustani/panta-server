@@ -275,7 +275,7 @@ def projectInfo(request):
 		return HttpResponseBadRequest()
 
 
-
+'''
 
 def project_users(request):
 
@@ -291,7 +291,10 @@ def project_users(request):
 		results["successful"]="true"
 		lst=[]
 		for pro in Profile.objects.filter(projectID__iexact=projectID):
-			lst.append(Login.objects.get(username__iexact=pro.username).as_json())
+
+			a=Login.objects.get(username__iexact=pro.username).as_json()
+			del a["password"]
+			lst.append(a)
 		
 		results["project_users"]=lst
 		print json.dumps(results)
@@ -329,6 +332,7 @@ def project_users(request):
 	else:
 		return HttpResponseBadRequest()
 
+'''
 
 def project_tasks(request):
 
@@ -409,7 +413,8 @@ def project_all(request):
 		#data for project's users
 		lst=[]
 		for pro in Profile.objects.filter(projectID__iexact=projectID):
-			lst.append(Login.objects.get(username__iexact=pro.username).as_json())
+			a=Login.objects.get(username__iexact=pro.username).as_json()
+			del a["password"]
 		
 		results["project_users"]=lst
 		
@@ -551,6 +556,25 @@ def addMember(request):
 			results["successful"]="true"
 			newUser=Profile(username=username,projectID=projectID)
 			newUser.save()
+
+			print "must send notif"
+			pro_name=Projects.objects.get(id__exact=projectID).projectName
+			message=name+'you are added to project '+ pro_name
+			for obj in Gcm_users.objects.filter(username__iexact=username):
+	
+				user_reg_id=obj.reg_id
+				
+				#msg_type=2 ---> add member
+				data={'message':message,'msg_type':'2'}
+				
+
+				#add api key
+				gcm = GCM("AIzaSyCWZBvIjLg0kmBELKsObqostZHx2AZWCvQ")
+				reg_id = user_reg_id
+
+				gcm.plaintext_request(registration_id=reg_id, data=data)
+				print 'notif sent'
+
 				
 			print json.dumps(results)
 			response = HttpResponse(json.dumps(results), content_type="application/json")
@@ -736,6 +760,24 @@ def addTask(request):
 			p.progress=progress
 			p.save()
 			
+			print "must send notif"
+			pro_name=Projects.objects.get(id__exact=projectID).projectName
+			message=name+'A task is given to you in project '+ pro_name
+			for obj in Gcm_users.objects.filter(username__iexact=username):
+	
+				user_reg_id=obj.reg_id
+				
+				#msg_type=3 ---> add task
+				data={'message':message,'msg_type':'2'}
+				
+
+				#add api key
+				gcm = GCM("AIzaSyCWZBvIjLg0kmBELKsObqostZHx2AZWCvQ")
+				reg_id = user_reg_id
+
+				gcm.plaintext_request(registration_id=reg_id, data=data)
+				print 'notif sent'
+
 
 			
 			print json.dumps(results)
@@ -920,7 +962,7 @@ def editTask(request):
 		day=unicodedata.normalize('NFKD', request.POST['day']).encode('utf-8','ignore');
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		
-		deadline= date(int(year),int(month),int(day))
+		deadline= datetime(int(year),int(month),int(day),int(hour),int(minute),int(second))
 
 		added=0
 		for i in Profile.objects.filter(projectID__iexact=projectID):
