@@ -61,7 +61,7 @@ class Projects(models.Model):
     progress = models.IntegerField(max_length=15)
     pDeadline = models.DateField()
     pDelta = models.IntegerField(max_length=15)
-    link = models.TextField(null=true, blank=true)
+    link = models.TextField(null=True, blank=True)
 
    # class Meta:
         #managed=False   
