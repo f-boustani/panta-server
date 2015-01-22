@@ -19,8 +19,8 @@ class Gcm_users(models.Model):
 
     username = models.EmailField()
     reg_id = models.TextField()
-    class Meta:
-        unique_together = ('username','reg_id')
+    #class Meta:
+     #   unique_together = ('username','reg_id')
         #managed=False
     
         
@@ -60,7 +60,7 @@ class Projects(models.Model):
     project_info = models.CharField(max_length=5000)
     progress = models.IntegerField(max_length=15)
     pDeadline = models.DateField()
-    pDelta = models.IntegerField(max_length=15)
+   # pDelta = models.IntegerField(max_length=15)
     link = models.TextField()
 
    # class Meta:
@@ -86,7 +86,7 @@ class Task(models.Model):
     projectID = models.IntegerField(max_length=15)
     deadline = models.DateTimeField(null=True)
     status = models.CharField(max_length=1, choices=task_CHOICES)
-    delta = models.IntegerField(max_length=15)
+    #delta = models.IntegerField(max_length=15)
 
     class Meta:
         unique_together = ('id','username')
