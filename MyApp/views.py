@@ -559,7 +559,7 @@ def addMember(request):
 
 			print "must send notif"
 			pro_name=Projects.objects.get(id__exact=projectID).projectName
-			message=name+'you are added to project '+ pro_name
+			message='you are added to project '+ pro_name
 			for obj in Gcm_users.objects.filter(username__iexact=username):
 	
 				user_reg_id=obj.reg_id
@@ -717,8 +717,9 @@ def addTask(request):
 		minute=unicodedata.normalize('NFKD', request.POST['minute']).encode('utf-8','ignore');
 		
 		deadline= datetime(int(year),int(month),int(day),int(hour),int(minute))
-		#delta=deadline - datetime(1970,1,1)).total_seconds()
-		print Login.objects.filter(username__iexact=username).exists()
+		#delta=(deadline - datetime(1970,1,1)).total_seconds()
+
+		#print Login.objects.filter(username__iexact=username).exists()
 		if not(Login.objects.filter(username__iexact=username).exists()):
 			print "username doesnt exist"
 			results ={}
@@ -777,7 +778,7 @@ def addTask(request):
 			del task["status"]
 
 			#msg_type=3 ---> add task	
-			data={'message':message,'msg_type':'3','task_info':task}
+			data={'message':message,'msg_type':'3','task_info':json.dumps(task)}
 				
 
 			for obj in Gcm_users.objects.filter(username__iexact=username):
@@ -978,7 +979,7 @@ def editTask(request):
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		
 		deadline= datetime(int(year),int(month),int(day),int(hour),int(minute))
-		#delta=deadline - datetime(1970,1,1)).total_seconds()
+		#delta=(deadline - datetime(1970,1,1)).total_seconds()
 
 		added=0
 		for i in Profile.objects.filter(projectID__iexact=projectID):

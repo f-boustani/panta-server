@@ -17,10 +17,10 @@ task_CHOICES =(
 
 class Gcm_users(models.Model):
 
-    username = models.EmailField()
-    reg_id = models.TextField()
-    #class Meta:
-     #   unique_together = ('username','reg_id')
+    username = models.EmailField(max_length=70)
+    reg_id = models.TextField(max_length=200)
+    class Meta:
+        unique_together = ('username','reg_id')
         #managed=False
     
         
