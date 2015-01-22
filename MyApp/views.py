@@ -5,6 +5,7 @@ from datetime import datetime,timedelta,date
 import time
 import json
 import unicodedata
+from django.utils import timezone
 from django.db.models import Q
 from MyApp.models import *
 from gcm import *
@@ -719,6 +720,7 @@ def addTask(request):
 		
 		print 'year: ',year, int(year)
 		deadline= datetime(int(year),int(month),int(day),int(hour),int(minute))
+		#deadline=timezone.make_aware(deadline, timezone.get_current_timezone())
 		print 'deadline: ',deadline
 		delta=(deadline - datetime(1970,1,1)).total_seconds()
 
