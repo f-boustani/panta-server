@@ -712,8 +712,10 @@ def addTask(request):
 		year=unicodedata.normalize('NFKD', request.POST['year']).encode('utf-8','ignore');
 		month=unicodedata.normalize('NFKD', request.POST['month']).encode('utf-8','ignore');
 		day=unicodedata.normalize('NFKD', request.POST['day']).encode('utf-8','ignore');
+		hour=unicodedata.normalize('NFKD', request.POST['hour']).encode('utf-8','ignore');
+		minute=unicodedata.normalize('NFKD', request.POST['minute']).encode('utf-8','ignore');
 		
-		deadline= date(int(year),int(month),int(day))
+		deadline= datetime(int(year),int(month),int(day),int(hour),int(minute))
 		print Login.objects.filter(username__iexact=username).exists()
 		if not(Login.objects.filter(username__iexact=username).exists()):
 			print "username doesnt exist"
@@ -751,6 +753,8 @@ def addTask(request):
 
 			newTask=Task(taskName=taskName,task_info=task_info, projectID=projectID,username=username,deadline=deadline,status='0')
 			newTask.save()
+			task=Task.objects.latest('id').as_json()
+			
 
 			#change progress
 			a=Task.objects.filter(projectID=projectID)
@@ -763,14 +767,20 @@ def addTask(request):
 			print "must send notif"
 			pro_name=Projects.objects.get(id__exact=projectID).projectName
 			message=name+'A task is given to you in project '+ pro_name
+			del task["taskName"]
+			del task["task_info"]
+			del task["deadline"]
+			del task["username"]
+			del task["status"]
+
+			#msg_type=3 ---> add task	
+			data={'message':message,'msg_type':'3','task_info':task}
+				
+
 			for obj in Gcm_users.objects.filter(username__iexact=username):
 	
 				user_reg_id=obj.reg_id
 				
-				#msg_type=3 ---> add task
-				data={'message':message,'msg_type':'2'}
-				
-
 				#add api key
 				gcm = GCM("AIzaSyCWZBvIjLg0kmBELKsObqostZHx2AZWCvQ")
 				reg_id = user_reg_id
@@ -960,9 +970,11 @@ def editTask(request):
 		year=unicodedata.normalize('NFKD', request.POST['year']).encode('utf-8','ignore');
 		month=unicodedata.normalize('NFKD', request.POST['month']).encode('utf-8','ignore');
 		day=unicodedata.normalize('NFKD', request.POST['day']).encode('utf-8','ignore');
+		hour=unicodedata.normalize('NFKD', request.POST['hour']).encode('utf-8','ignore');
+		minute=unicodedata.normalize('NFKD', request.POST['minute']).encode('utf-8','ignore');
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		
-		deadline= datetime(int(year),int(month),int(day),int(hour),int(minute),int(second))
+		deadline= datetime(int(year),int(month),int(day),int(hour),int(minute))
 
 		added=0
 		for i in Profile.objects.filter(projectID__iexact=projectID):

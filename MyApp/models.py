@@ -20,7 +20,8 @@ class Gcm_users(models.Model):
     username = models.EmailField()
     reg_id = models.TextField()
     class Meta:
-        managed=False
+        unique_together = ('username','reg_id')
+        #managed=False
     
         
 class Login(models.Model):
@@ -29,8 +30,8 @@ class Login(models.Model):
     password = models.CharField(max_length=100)
     name = models.CharField(max_length=50)
 
-    class Meta:
-        managed=False    
+    #class Meta:
+        #managed=False    
 
     def as_json(self):
             return dict(
@@ -45,7 +46,7 @@ class Profile(models.Model):
 
     class Meta:
         unique_together = ('username','projectID')
-        managed=False
+        #managed=False
 
     def as_json(self):
             return dict(
@@ -58,10 +59,12 @@ class Projects(models.Model):
     managerUser = models.EmailField()
     project_info = models.CharField(max_length=5000)
     progress = models.IntegerField(max_length=15)
-    pDeadline = models.DateTimeField()
+    pDeadline = models.DateField()
+    pDelta = models.IntegerField(max_length=15)
+    link = models.TextField()
 
-    class Meta:
-        managed=False   
+   # class Meta:
+        #managed=False   
 
     def as_json(self):
             return dict(
@@ -71,6 +74,7 @@ class Projects(models.Model):
                 projectID=self.id,
                 project_info=self.project_info,
                 progress=self.progress,
+                link=self.link,
             	pDeadline=self.pDeadline)
 
 
@@ -82,10 +86,11 @@ class Task(models.Model):
     projectID = models.IntegerField(max_length=15)
     deadline = models.DateTimeField(null=True)
     status = models.CharField(max_length=1, choices=task_CHOICES)
+    delta = models.IntegerField(max_length=15)
 
     class Meta:
         unique_together = ('id','username')
-        managed=False
+        #managed=False
 
     def as_json(self):
             return dict(
@@ -105,8 +110,8 @@ class User_father(models.Model):
     position = models.CharField(max_length=50)
     deadline = models.DateTimeField(null=True)
 
-    class Meta:
-        managed=False   
+    #class Meta:
+        #managed=False   
     
     def as_json(self):
             return dict(
