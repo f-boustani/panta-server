@@ -19,9 +19,9 @@ class Gcm_users(models.Model):
 
     username = models.EmailField(max_length=70)
     reg_id = models.CharField(max_length=200)
-    class Meta:
+    #class Meta:
        # unique_together = ('username','reg_id',)
-        managed=False
+        #managed=False
     
         
 class Login(models.Model):
