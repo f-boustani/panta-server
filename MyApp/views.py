@@ -717,7 +717,9 @@ def addTask(request):
 		hour=unicodedata.normalize('NFKD', request.POST['hour']).encode('utf-8','ignore');
 		minute=unicodedata.normalize('NFKD', request.POST['minute']).encode('utf-8','ignore');
 		
+		print 'year: ',year, int(year)
 		deadline= datetime(int(year),int(month),int(day),int(hour),int(minute))
+		print 'deadline: ',deadline
 		delta=(deadline - datetime(1970,1,1)).total_seconds()
 
 		#print Login.objects.filter(username__iexact=username).exists()
