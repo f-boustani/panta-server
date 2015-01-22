@@ -642,6 +642,7 @@ def addProject(request):
 		day=unicodedata.normalize('NFKD', request.POST['day']).encode('utf-8','ignore');
 		
 		pDeadline= date(int(year),int(month),int(day))
+		pDelta=(pDeadline - date(1970,1,1)).days
 
 
 
@@ -650,7 +651,7 @@ def addProject(request):
 		results ={}
 		results["successful"]="true"
 
-		newProject=Projects(projectName=projectName, managerUser=username, managerName=managerName, project_info=project_info,progress=0, pDeadline=pDeadline)
+		newProject=Projects(projectName=projectName,pDelta=pDelta, managerUser=username, managerName=managerName, project_info=project_info,progress=0, pDeadline=pDeadline)
 		newProject.save()
 		lst=Projects.objects.all().order_by("-id")
 		print lst
@@ -717,7 +718,7 @@ def addTask(request):
 		minute=unicodedata.normalize('NFKD', request.POST['minute']).encode('utf-8','ignore');
 		
 		deadline= datetime(int(year),int(month),int(day),int(hour),int(minute))
-		#delta=(deadline - datetime(1970,1,1)).total_seconds()
+		delta=(deadline - datetime(1970,1,1)).total_seconds()
 
 		#print Login.objects.filter(username__iexact=username).exists()
 		if not(Login.objects.filter(username__iexact=username).exists()):
@@ -754,8 +755,8 @@ def addTask(request):
 			results ={}
 			results["successful"]="true"
 
-			#delta=delta
-			newTask=Task(taskName=taskName,task_info=task_info, projectID=projectID,username=username,deadline=deadline,status='0')
+			
+			newTask=Task(taskName=taskName,task_info=task_info,delta=delta, projectID=projectID,username=username,deadline=deadline,status='0')
 			newTask.save()
 			task=Task.objects.latest('id').as_json()
 			
@@ -906,6 +907,7 @@ def editProject(request):
 		day=unicodedata.normalize('NFKD', request.POST['day']).encode('utf-8','ignore');
 		
 		pDeadline= date(int(year),int(month),int(day))
+		pDelta=(t - date(1970,1,1)).days
 		results ={}
 		print projectID
 		print projectName
@@ -915,6 +917,7 @@ def editProject(request):
 		p.projectName=projectName
 		p.project_info=project_info
 		p.pDeadline=pDeadline
+		p.pDelta=pDelta
 		p.save()
 
 		results["successful"]="true"
@@ -979,7 +982,7 @@ def editTask(request):
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		
 		deadline= datetime(int(year),int(month),int(day),int(hour),int(minute))
-		#delta=(deadline - datetime(1970,1,1)).total_seconds()
+		delta=(deadline - datetime(1970,1,1)).total_seconds()
 
 		added=0
 		for i in Profile.objects.filter(projectID__iexact=projectID):
@@ -994,7 +997,7 @@ def editTask(request):
 			t.taskName=taskName
 			t.task_info=task_info
 			t.deadline=deadline
-			#t.delta=delta
+			t.delta=delta
 			t.username=username
 			t.save()
 
