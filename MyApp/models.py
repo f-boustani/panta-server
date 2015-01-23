@@ -27,7 +27,6 @@ class Gcm_users(models.Model):
 class Notification(models.Model):
 
     username = models.EmailField(max_length=70)
-    reg_id = models.CharField(max_length=500)
     msg = models.CharField(max_length=200)
     #class Meta:
         #managed=False

@@ -562,14 +562,13 @@ def addMember(request):
 			pro_name=Projects.objects.get(id__exact=projectID).projectName
 			message='you are added to project '+ pro_name
 
+			#save notif to notification table
+			new_notif=Notification(username=username,msg=message)
+			new_notif.save()
+
 			for obj in Gcm_users.objects.filter(username__iexact=username):
 	
 				user_reg_id=obj.reg_id
-
-				#save notif to notification table
-				new_notif=Notification(username=username,reg_id=user_reg_id,msg=message)
-				new_notif.save()
-
 
 				#msg_type=2 ---> add member
 				data={'message':message,'msg_type':'2'}
@@ -788,6 +787,11 @@ def addTask(request):
 			del task["username"]
 			del task["status"]
 
+			#save notif to notification table
+			new_notif=Notification(username=username,msg=message)
+			new_notif.save()
+
+
 			#msg_type=3 ---> add task	
 			data={'message':message,'msg_type':'3','task_info':json.dumps(task)}
 				
@@ -796,10 +800,6 @@ def addTask(request):
 	
 				user_reg_id=obj.reg_id
 				
-				#save notif to notification table
-				new_notif=Notification(username=username,reg_id=user_reg_id,msg=message)
-				new_notif.save()
-
 				#add api key
 				gcm = GCM("AIzaSyCWZBvIjLg0kmBELKsObqostZHx2AZWCvQ")
 				reg_id = user_reg_id
@@ -1226,16 +1226,16 @@ def changeStatus(request):
 			task_info=task_info.as_json()
 			task_info['managerUser']=manager_user
 			#print 'task_info: ', json.dumps(task_info)
+			#save notif to notification table
+			new_notif=Notification(username=manager_user,msg=message)
+			new_notif.save()
 
 
 			for obj in Gcm_users.objects.filter(username__iexact=manager_user):
 					
 				manager_reg_id=obj.reg_id
 
-				#save notif to notification table
-				new_notif=Notification(username=manager_user,reg_id=manager_reg_id,msg=message)
-				new_notif.save()
-
+				
 				#msg_type=1 ---> task done by user
 				data={'message':message, 'task_info': json.dumps(task_info), 'msg_type':'1'}
 				
@@ -1546,3 +1546,63 @@ def signOut(request):
 	else:
 		return HttpResponseBadRequest()
 
+
+def getNotif(request):
+
+	print "-------------------------------------------"
+	t=datetime.utcnow()+timedelta(minutes=210)
+	print t.isoformat()
+
+	if request.method == "POST":
+		print 'POST- get notifs'
+		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
+		
+		print "username: ", username
+		
+		results={}
+		lst=[]
+		for obj in Notification.objects.filter(username__iexact=username):
+			
+			obj=obj.as_json()
+			del obj["reg_id"]
+			lst.append(obj)
+
+
+		results["successful"]="true"
+		results["notification"]=lst
+
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		return response
+
+			
+	elif request.method == "OPTIONS":
+		print '##############OPTIONS###########'
+		results ={}
+		results["successful"]="false"
+		results["mode"]="option mode-sign out"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+	elif request.method == "GET":
+		print "GET MODE"
+		results ={}
+		results["successful"]="false"
+		results["mode"]="get mode - sign out"
+		print json.dumps(results)
+		response = HttpResponse(json.dumps(results), content_type="application/json")
+		response['Access-Control-Allow-Origin'] = "*"
+		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+		response['Access-Control-Max-Age'] = "1800"
+		return response
+
+	else:
+		return HttpResponseBadRequest()
