@@ -561,10 +561,16 @@ def addMember(request):
 			print "must send notif"
 			pro_name=Projects.objects.get(id__exact=projectID).projectName
 			message='you are added to project '+ pro_name
+
 			for obj in Gcm_users.objects.filter(username__iexact=username):
 	
 				user_reg_id=obj.reg_id
-				
+
+				#save notif to notification table
+				new_notif=Notification(username=username,reg_id=user_reg_id,msg=message)
+				new_notif.save()
+
+
 				#msg_type=2 ---> add member
 				data={'message':message,'msg_type':'2'}
 				
@@ -790,6 +796,10 @@ def addTask(request):
 	
 				user_reg_id=obj.reg_id
 				
+				#save notif to notification table
+				new_notif=Notification(username=username,reg_id=user_reg_id,msg=message)
+				new_notif.save()
+
 				#add api key
 				gcm = GCM("AIzaSyCWZBvIjLg0kmBELKsObqostZHx2AZWCvQ")
 				reg_id = user_reg_id
@@ -1221,7 +1231,11 @@ def changeStatus(request):
 			for obj in Gcm_users.objects.filter(username__iexact=manager_user):
 					
 				manager_reg_id=obj.reg_id
-				
+
+				#save notif to notification table
+				new_notif=Notification(username=manager_user,reg_id=manager_reg_id,msg=message)
+				new_notif.save()
+
 				#msg_type=1 ---> task done by user
 				data={'message':message, 'task_info': json.dumps(task_info), 'msg_type':'1'}
 				
