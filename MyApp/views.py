@@ -643,12 +643,10 @@ def addProject(request):
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		projectName=unicodedata.normalize('NFKD', request.POST['projectName']).encode('utf-8','ignore');
 		project_info=unicodedata.normalize('NFKD', request.POST['project_info']).encode('utf-8','ignore');
-		link=unicodedata.normalize('NFKD', request.POST['link']).encode('utf-8','ignore');
-		
+		link=unicodedata.normalize('NFKD', request.POST['link']).encode('utf-8','ignore');		
 		year=unicodedata.normalize('NFKD', request.POST['year']).encode('utf-8','ignore');
 		month=unicodedata.normalize('NFKD', request.POST['month']).encode('utf-8','ignore');
-		day=unicodedata.normalize('NFKD', request.POST['day']).encode('utf-8','ignore');
-		
+		day=unicodedata.normalize('NFKD', request.POST['day']).encode('utf-8','ignore');		
 		pDeadline= date(int(year),int(month),int(day))
 		pDelta=(pDeadline - date(1970,1,1)).days
 
@@ -925,7 +923,7 @@ def editProject(request):
 		day=unicodedata.normalize('NFKD', request.POST['day']).encode('utf-8','ignore');
 		
 		pDeadline= date(int(year),int(month),int(day))
-		pDelta=(t - date(1970,1,1)).days
+		pDelta=(pDeadline - date(1970,1,1)).days
 		results ={}
 		print projectID
 		print projectName
