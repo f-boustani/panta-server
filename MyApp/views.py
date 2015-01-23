@@ -643,6 +643,8 @@ def addProject(request):
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		projectName=unicodedata.normalize('NFKD', request.POST['projectName']).encode('utf-8','ignore');
 		project_info=unicodedata.normalize('NFKD', request.POST['project_info']).encode('utf-8','ignore');
+		link=unicodedata.normalize('NFKD', request.POST['link']).encode('utf-8','ignore');
+		
 		year=unicodedata.normalize('NFKD', request.POST['year']).encode('utf-8','ignore');
 		month=unicodedata.normalize('NFKD', request.POST['month']).encode('utf-8','ignore');
 		day=unicodedata.normalize('NFKD', request.POST['day']).encode('utf-8','ignore');
@@ -657,7 +659,7 @@ def addProject(request):
 		results ={}
 		results["successful"]="true"
 
-		newProject=Projects(projectName=projectName,pDelta=pDelta, managerUser=username, managerName=managerName, project_info=project_info,progress=0, pDeadline=pDeadline)
+		newProject=Projects(projectName=projectName,pDelta=pDelta, managerUser=username, managerName=managerName, project_info=project_info,progress=0, pDeadline=pDeadline,link=link)
 		newProject.save()
 		lst=Projects.objects.all().order_by("-id")
 		print lst
@@ -916,6 +918,8 @@ def editProject(request):
 		projectID=int(unicodedata.normalize('NFKD', request.POST['projectID']).encode('utf-8','ignore'));
 		projectName=unicodedata.normalize('NFKD', request.POST['projectName']).encode('utf-8','ignore');
 		project_info=unicodedata.normalize('NFKD', request.POST['project_info']).encode('utf-8','ignore');
+		link=unicodedata.normalize('NFKD', request.POST['link']).encode('utf-8','ignore');
+		
 		year=unicodedata.normalize('NFKD', request.POST['year']).encode('utf-8','ignore');
 		month=unicodedata.normalize('NFKD', request.POST['month']).encode('utf-8','ignore');
 		day=unicodedata.normalize('NFKD', request.POST['day']).encode('utf-8','ignore');
@@ -932,6 +936,7 @@ def editProject(request):
 		p.project_info=project_info
 		p.pDeadline=pDeadline
 		p.pDelta=pDelta
+		p.link=link
 		p.save()
 
 		results["successful"]="true"
