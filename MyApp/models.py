@@ -19,8 +19,8 @@ class Gcm_users(models.Model):
 
     username = models.EmailField(max_length=70)
     reg_id = models.CharField(max_length=200)
-    #class Meta:
-       # unique_together = ('username','reg_id',)
+    class Meta:
+        unique_together = ('username','reg_id',)
         #managed=False
     
         
@@ -30,8 +30,8 @@ class Login(models.Model):
     password = models.CharField(max_length=100)
     name = models.CharField(max_length=50)
 
-    #class Meta:
-        #managed=False    
+    class Meta:
+        managed=False    
 
     def as_json(self):
             return dict(
@@ -46,7 +46,7 @@ class Profile(models.Model):
 
     class Meta:
         unique_together = ('username','projectID')
-        #managed=False
+        managed=False
 
     def as_json(self):
             return dict(
@@ -63,8 +63,8 @@ class Projects(models.Model):
     pDelta = models.IntegerField(max_length=15)
     link = models.TextField(null=True, blank=True)
 
-   # class Meta:
-        #managed=False   
+    class Meta:
+        managed=False   
 
     def as_json(self):
             return dict(
@@ -90,7 +90,7 @@ class Task(models.Model):
 
     class Meta:
         unique_together = ('id','username')
-        #managed=False
+        managed=False
 
     def as_json(self):
             return dict(
@@ -110,8 +110,8 @@ class User_father(models.Model):
     position = models.CharField(max_length=50)
     deadline = models.DateTimeField(null=True)
 
-    #class Meta:
-        #managed=False   
+    class Meta:
+        managed=False   
     
     def as_json(self):
             return dict(
