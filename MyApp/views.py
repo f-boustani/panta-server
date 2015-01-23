@@ -416,7 +416,8 @@ def project_all(request):
 		for pro in Profile.objects.filter(projectID__iexact=projectID):
 			a=Login.objects.get(username__iexact=pro.username).as_json()
 			del a["password"]
-		
+			lst.append(a)
+			
 		results["project_users"]=lst
 		
 
