@@ -477,6 +477,15 @@ def taskInfo(request):
 		taskID=int(unicodedata.normalize('NFKD', request.POST['taskID']).encode('utf-8','ignore'));
 		
 		results ={}
+		proID=Task.objects.get(id__exact=taskID).projectID
+		lst=[]
+		for pro in Profile.objects.filter(projectID__iexact=proID):
+			a=Login.objects.get(username__iexact=pro.username).as_json()
+			del a["password"]
+			lst.append(a)
+			
+		results["project_users"]=lst
+		
 		results["successful"]="true"
 		task_info=Task.objects.get(id__iexact=taskID)
 		username=task_info.username
