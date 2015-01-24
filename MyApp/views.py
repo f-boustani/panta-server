@@ -545,8 +545,6 @@ def addMember(request):
 		username=unicodedata.normalize('NFKD', request.POST['username']).encode('utf-8','ignore');
 		
 		for obj in Profile.objects.filter(username__iexact=username):
-			#print type(obj.projectID)
-			#print type(projectID)
 			if(obj.projectID==projectID):
 
 				print "username is already added"
@@ -1457,7 +1455,7 @@ def gcmDatabase(request):
 		print "reg_id: ",reg_id
 		results={}
 
-		if (reg_id==" "):
+		if (reg_id==""):
 
 			print 'reg_id is empty!!'
 			results["successful"]= "false"
@@ -1526,7 +1524,7 @@ def signOut(request):
 		print "username: ", username
 		print "reg_id: ",reg_id
 
-		if (reg_id==" "):
+		if (reg_id==""):
 			
 			print 'reg_id is empty!!'
 			results["successful"]= "false"
