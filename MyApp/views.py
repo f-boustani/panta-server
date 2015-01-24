@@ -1475,6 +1475,18 @@ def gcmDatabase(request):
 			response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
 			return response
 
+		if (Gcm_users.objects.get(username__iexact=username,reg_id__iexact=reg_id).exists()):
+			print 'username & reg_id exists!!'
+			results["successful"]= "false"
+			results["error"]="username & reg_id exists"
+			response = HttpResponse(json.dumps(results), content_type="application/json")
+			response['Access-Control-Allow-Origin'] = "*"
+			response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+			response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+			return response
+
+
+
 
 		new = Gcm_users(username=username,reg_id=reg_id)
 		new.save()
