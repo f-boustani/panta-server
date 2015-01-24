@@ -1237,7 +1237,7 @@ def changeStatus(request):
 			task_info.deadline=str(task_info.deadline)
 			task_info=task_info.as_json()
 			task_info['managerUser']=manager_user
-			#print 'task_info: ', json.dumps(task_info)
+			
 			#save notif to notification table
 			new_notif=Notification(username=manager_user,msg=message)
 			new_notif.save()
