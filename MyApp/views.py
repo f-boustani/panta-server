@@ -1528,7 +1528,7 @@ def signOut(request):
 		if (reg_id==""):
 			
 			print 'reg_id is empty!!'
-			results["successful"]= "false"
+			results["successful"]= "true"
 			results["error"]="reg_id is empty"
 			response = HttpResponse(json.dumps(results), content_type="application/json")
 			response['Access-Control-Allow-Origin'] = "*"
