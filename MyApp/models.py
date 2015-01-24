@@ -1,13 +1,6 @@
 from django.db import models
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=50)
-    class Meta:
-        managed=False
-    def __unicode__(self):
-        return self.name
-
 	
 task_CHOICES =(
 	('0','Doing'),

@@ -1616,7 +1616,6 @@ def getNotif(request):
 		for obj in Notification.objects.filter(username__iexact=username):
 			
 			obj=obj.as_json()
-			del obj["reg_id"]
 			lst.append(obj)
 
 
