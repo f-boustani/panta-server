@@ -1456,11 +1456,12 @@ def gcmDatabase(request):
 		print "username: ", username
 		print "reg_id: ",reg_id
 		results={}
-		
+
 		if (reg_id==" "):
 
 			print 'reg_id is empty!!'
 			results["successful"]= "false"
+			results["error"]="reg_id is empty"
 			response = HttpResponse(json.dumps(results), content_type="application/json")
 			response['Access-Control-Allow-Origin'] = "*"
 			response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
@@ -1512,7 +1513,7 @@ def gcmDatabase(request):
 
 def signOut(request):
 
-	# whene user sign out, clear the gcm record
+	# when user sign out, clear the gcm record
 	print "-------------------------------------------"
 	t=datetime.utcnow()+timedelta(minutes=210)
 	print t.isoformat()
@@ -1525,7 +1526,18 @@ def signOut(request):
 		print "username: ", username
 		print "reg_id: ",reg_id
 
-		
+		if (reg_id==" "):
+			
+			print 'reg_id is empty!!'
+			results["successful"]= "false"
+			results["error"]="reg_id is empty"
+			response = HttpResponse(json.dumps(results), content_type="application/json")
+			response['Access-Control-Allow-Origin'] = "*"
+			response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+			response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+			return response
+
+
 		Gcm_users.objects.get(username__iexact=username,reg_id__iexact=reg_id).delete()
 
 		results={}
