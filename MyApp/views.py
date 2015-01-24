@@ -1455,13 +1455,22 @@ def gcmDatabase(request):
 		
 		print "username: ", username
 		print "reg_id: ",reg_id
-
+		results={}
 		
+		if (reg_id==" "):
+
+			print 'reg_id is empty!!'
+			results["successful"]= "false"
+			response = HttpResponse(json.dumps(results), content_type="application/json")
+			response['Access-Control-Allow-Origin'] = "*"
+			response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+			response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+			return response
+
+
 		new = Gcm_users(username=username,reg_id=reg_id)
 		new.save()
 
-		results={}
-		
 		results["successful"]="true"
 
 		print json.dumps(results)
