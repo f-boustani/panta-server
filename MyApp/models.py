@@ -23,6 +23,12 @@ class Notification(models.Model):
     msg = models.CharField(max_length=200)
     #class Meta:
         #managed=False
+    def as_json(self):
+            return dict(
+                username=self.username,
+                msg=self.msg)
+                
+    
 
         
 class Login(models.Model):
@@ -31,8 +37,8 @@ class Login(models.Model):
     password = models.CharField(max_length=100)
     name = models.CharField(max_length=50)
 
-    #class Meta:
-     #   managed=False    
+    class Meta:
+        managed=False    
 
     def as_json(self):
             return dict(
@@ -47,7 +53,7 @@ class Profile(models.Model):
 
     class Meta:
         unique_together = ('username','projectID')
-      #  managed=False
+        managed=False
 
     def as_json(self):
             return dict(
@@ -64,8 +70,8 @@ class Projects(models.Model):
     pDelta = models.IntegerField(max_length=15)
     link = models.TextField(null=True, blank=True)
 
-    #class Meta:
-       # managed=False   
+    class Meta:
+        managed=False   
 
     def as_json(self):
             return dict(
@@ -91,7 +97,7 @@ class Task(models.Model):
 
     class Meta:
         unique_together = ('id','username')
-     #   managed=False
+        managed=False
 
     def as_json(self):
             return dict(
