@@ -1260,6 +1260,12 @@ def changeStatus(request):
 				print 'notif sent'
 				print 'response',a
 
+				if(a!=None):
+					user_reg=Gcm_users.objects.get(username__iexact=manager_user,reg_id__iexact=reg_id)
+					user_reg.reg_id=a
+					user_reg.save()
+
+				
 
 
 		#accepted by manager
