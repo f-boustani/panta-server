@@ -794,6 +794,7 @@ def addTask(request):
 			del task["deadline"]
 			del task["username"]
 			del task["status"]
+			task["managerUser"]=Projects.objects.get(id__exact=projectID).managerUser
 
 			#save notif to notification table
 			new_notif=Notification(username=username,msg=message)
