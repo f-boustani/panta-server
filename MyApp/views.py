@@ -1256,8 +1256,9 @@ def changeStatus(request):
 				gcm = GCM("AIzaSyCWZBvIjLg0kmBELKsObqostZHx2AZWCvQ")
 				reg_id = manager_reg_id
 
-				gcm.plaintext_request(registration_id=reg_id, data=data)
+				a=gcm.plaintext_request(registration_id=reg_id, data=data)
 				print 'notif sent'
+				print 'response',a
 
 
 
