@@ -1523,7 +1523,8 @@ def signOut(request):
 		
 		print "username: ", username
 		print "reg_id: ",reg_id
-
+		results={}
+		
 		if (reg_id==""):
 			
 			print 'reg_id is empty!!'
@@ -1538,8 +1539,6 @@ def signOut(request):
 
 		Gcm_users.objects.get(username__iexact=username,reg_id__iexact=reg_id).delete()
 
-		results={}
-		
 		results["successful"]="true"
 
 		print json.dumps(results)
