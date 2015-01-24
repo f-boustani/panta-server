@@ -1261,6 +1261,7 @@ def changeStatus(request):
 				print 'response',a
 
 				if(a!=None):
+					print 'reg_id changed!!'
 					user_reg=Gcm_users.objects.get(username__iexact=manager_user,reg_id__iexact=reg_id)
 					user_reg.reg_id=a
 					user_reg.save()
