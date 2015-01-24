@@ -1475,7 +1475,7 @@ def gcmDatabase(request):
 			response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
 			return response
 
-		if (Gcm_users.objects.get(username__iexact=username,reg_id__iexact=reg_id).exists()):
+		if (Gcm_users.objects.filter(username__iexact=username,reg_id__iexact=reg_id).exists()):
 			print 'username & reg_id exists!!'
 			results["successful"]= "false"
 			results["error"]="username & reg_id exists"
