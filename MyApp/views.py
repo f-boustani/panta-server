@@ -1741,6 +1741,7 @@ def check_deadline(request):
 			manager=Projects.objects.get(id__iexact=task.projectID).managerUser
 
 			task=task.as_json()
+			user=task["username"]
 			del task["task_info"]
 			del task["deadline"]
 			del task["username"]
@@ -1752,7 +1753,7 @@ def check_deadline(request):
 			data1={'message':msg1,'msg_type':'5','task_info':task}
 			data2={'message':msg2,'msg_type':'6','task_info':task}
 			
-			for obj in Gcm_users.objects.filter(username__iexact=task.username):
+			for obj in Gcm_users.objects.filter(username__iexact=user):
 				user_reg_id=obj.reg_id
 				
 				#add api key
