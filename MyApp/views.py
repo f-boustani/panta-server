@@ -1801,7 +1801,7 @@ def check_deadline(request):
     response['Access-Control-Max-Age'] = "1800"
     return response
 
-def check_end_project():
+def check_end_project(request):
 
     d_current=date.utcnow()+timedelta(minutes=210)
     d_current=(d_current - datetime(1970,1,1)).days
