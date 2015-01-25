@@ -1,4 +1,18 @@
 from gcm import *
+class InvalidRegistration(Exception):
+	pass
+
+class MismatchSenderId(Exception):
+	pass
+	
+class Unavailable(Exception):
+	pass
+
+class NotRegistered(Exception):
+	pass
+		
+
+
 message=' it works :D'
 gcm = GCM("AIzaSyBJ2eSyVNiT9Xfh-KsvmjjSvoY_rs7VvSA")
 data = {'the_message': message}
@@ -23,19 +37,6 @@ except Unavailable :
 except MismatchSenderId :
     print 'Unavailable'
 
-
-class InvalidRegistration(Exception):
-	pass
-
-class MismatchSenderId(Exception):
-	pass
-	
-class Unavailable(Exception):
-	pass
-
-class NotRegistered(Exception):
-	pass
-		
 
 
     
