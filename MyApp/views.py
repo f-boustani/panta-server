@@ -1557,7 +1557,7 @@ def signOut(request):
 			response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
 			return response
 
-		if (Gcm_users.objects.filter(username__iexact=username,reg_id__iexact=reg_id).exists():		
+		if (Gcm_users.objects.filter(username__iexact=username,reg_id__iexact=reg_id)).exists():		
 
 			Gcm_users.objects.get(username__iexact=username,reg_id__iexact=reg_id).delete()
 

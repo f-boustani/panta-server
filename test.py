@@ -1,6 +1,6 @@
 from gcm import *
 message=' it works :D'
-gcm = GCM("AIzaSyCWZBvIjLg0kmBELKsObqostZHx2AZWCvQ")
+gcm = GCM("AIzaSyBJ2eSyVNiT9Xfh-KsvmjjSvoY_rs7VvSA")
 data = {'the_message': message}
 reg_id = "APA91bGdwPMNU0rh5ccVuTtfipz_Z7yHhEdSkoA91v6WOzWpbdxLcS7Gkc3IF7qN4jf3rdLh-p3Vm5Ntx1aEJpTQxzyPMMouRSuylpjNBP-iXzkbmP2aj9AMEfMaLHCCEvBa5kEp0EOZRYqSnx-9mkoBj5T3gv2CQQ"
 
