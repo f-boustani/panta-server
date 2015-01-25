@@ -1769,11 +1769,11 @@ def check_deadline(request):
 						for entry in Gcm_users.objects.filter(registration_id=user_reg_id):
 							entry.reg_id = canonical_id
 							entry.save()
+
 			for obj in Gcm_users.objects.filter(username__iexact=manager):
-	
 				manager_reg_id=obj.reg_id
 				
-				#add api key
+#add api key
 				gcm = GCM("AIzaSyBJ2eSyVNiT9Xfh-KsvmjjSvoY_rs7VvSA")
 				try:
 					canonical_id = gcm.plaintext_request(registration_id=manager_reg_id, data=data2)
