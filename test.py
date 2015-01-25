@@ -2,7 +2,7 @@ from gcm import *
 message=' it works :D'
 gcm = GCM("AIzaSyBJ2eSyVNiT9Xfh-KsvmjjSvoY_rs7VvSA")
 data = {'the_message': message}
-reg_id = "APA91bFgFwRa271nk1i9wcFFEcHj8QowcLA1KytPLTZFhBFyHRAnkGjl9DuuZagXj4ODPTsx22ZcbVWt_JaXJH20-MoH-Uk7Ud62Z6-LB69u_t4O_kJaD8bz6qFS7BpXkn4ykmtJoZCC9Wlj4uT-MVYQjPBu6m89mw"
+reg_id = "APA91bF6SCQRJ_d8g7-A6o5c9PZsBtOo0TYxPgejM_4P3ByZJyJd2KOEvZTYo0l7BWoO8BBp4lPR-1hNRo6SHZ_M4hAg5jaya3ja5IrU-01uIuslD40X_ZcWvUSLyXElXckCCT2mw-Zvrs-goH2273A6l4dQlLdOHQ"
 
 try:
     canonical_id = gcm.plaintext_request(registration_id=reg_id, data=data)
@@ -21,7 +21,7 @@ except 'Unavailable' :
     print 'Unavailable'
 
 except 'MismatchSenderId' :
-    print 'MismatchSenderId'
+    print 'Unavailable'
 
 
     
