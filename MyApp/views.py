@@ -1803,7 +1803,7 @@ def check_deadline(request):
 
 def check_end_project(request):
 
-    d_current=date.utcnow()+timedelta(minutes=210)
+    d_current=datetime.utcnow()+timedelta(minutes=210)
     d_current=(d_current - datetime(1970,1,1)).days
     for pro in Projects.objects.all():
 
