@@ -1738,7 +1738,7 @@ def check_deadline(request):
 			# start sending notif to user
 			msg1=Projects.objects.get(id__iexact=task.projectID).projectName
 			msg2=Login.objects.get(username__iexact=task.username).name 
-			manager=Projects.objects.get(projectID__iexact=task.projectID).managerUser
+			manager=Projects.objects.get(id__iexact=task.projectID).managerUser
 
 			task=task.as_json()
 			del task["task_info"]
