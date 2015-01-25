@@ -1769,6 +1769,8 @@ def check_deadline(request):
                         for entry in Gcm_users.objects.filter(registration_id=user_reg_id):
                             entry.reg_id = canonical_id
                             entry.save()
+                except:
+                    print 'yes'
 
             for obj in Gcm_users.objects.filter(username__iexact=manager):
                 manager_reg_id=obj.reg_id
@@ -1785,6 +1787,8 @@ def check_deadline(request):
                         for entry in Gcm_users.objects.filter(registration_id=manager_reg_id):
                             entry.reg_id = canonical_id
                             entry.save()
+                except:
+                    print 'yes'
 
 
     results ={}
@@ -1825,6 +1829,8 @@ def check_end_project():
                             for entry in Gcm_users.objects.filter(registration_id=user_regID):
                                 entry.reg_id = canonical_id
                                 entry.save()
+                    except:
+                        print 'yes'
 
 
     results ={}
