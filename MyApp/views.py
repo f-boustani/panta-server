@@ -1557,18 +1557,30 @@ def signOut(request):
 			response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
 			return response
 
+		if (Gcm_users.objects.filter(username__iexact=username,reg_id__iexact=reg_id).exists():		
 
-		Gcm_users.objects.get(username__iexact=username,reg_id__iexact=reg_id).delete()
+			Gcm_users.objects.get(username__iexact=username,reg_id__iexact=reg_id).delete()
 
-		results["successful"]="true"
+			results["successful"]="true"
 
-		print json.dumps(results)
-		response = HttpResponse(json.dumps(results), content_type="application/json")
-		response['Access-Control-Allow-Origin'] = "*"
-		response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
-		response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
-		return response
+			print json.dumps(results)
+			response = HttpResponse(json.dumps(results), content_type="application/json")
+			response['Access-Control-Allow-Origin'] = "*"
+			response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+			response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+			return response
 
+		else:
+			print "reg_id isn't in db"
+			results["successful"]="true"
+			results["error"]="reg_id isn't in server db"
+
+			print json.dumps(results)
+			response = HttpResponse(json.dumps(results), content_type="application/json")
+			response['Access-Control-Allow-Origin'] = "*"
+			response['Access-Control-Allow-Methods'] = "POST ,GET ,OPTIONS"
+			response['Access-Control-Allow-Headers'] = "X-Requested-With,x-requested-with,content-type"
+			return response
 			
 	elif request.method == "OPTIONS":
 		print '##############OPTIONS###########'
