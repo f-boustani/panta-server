@@ -2,7 +2,7 @@ from gcm import *
 message=' it works :D'
 gcm = GCM("AIzaSyBJ2eSyVNiT9Xfh-KsvmjjSvoY_rs7VvSA")
 data = {'the_message': message}
-reg_id = "APA91bGdwPMNU0rh5ccVuTtfipz_Z7yHhEdSkoA91v6WOzWpbdxLcS7Gkc3IF7qN4jf3rdLh-p3Vm5Ntx1aEJpTQxzyPMMouRSuylpjNBP-iXzkbmP2aj9AMEfMaLHCCEvBa5kEp0EOZRYqSnx-9mkoBj5T3gv2CQQ"
+reg_id = "APA91bG5kogBn7hWgFzOk9wsTEKDIP_t2SVql4Zie9oICAUe5lGihlBhpCjexfLAayz9HHJnENGNdmN5SL9hX4LP35gUVDR3QUF_IoPH_HNzJ0kwOCTKA3l-7Tl9PHd7CqMvDrbOvL0NmgLfzkiui8vjsL24t4KFvg"
 
 #response=gcm.plaintext_request(registration_id=reg_id, data=data)
 #print response
