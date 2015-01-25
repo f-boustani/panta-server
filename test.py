@@ -6,14 +6,16 @@ reg_id = "APA91bG5kogBn7hWgFzOk9wsTEKDIP_t2SVql4Zie9oICAUe5lGihlBhpCjexfLAayz9HH
 
 try:
     canonical_id = gcm.plaintext_request(registration_id=reg_id, data=data)
-    print canonical_id
+    print 'id:' ,canonical_id
     if canonical_id:
     	print 'reg_id change,must replace'
         
        
-except GCMNotRegisteredException:
-    print 'notregistered,Remove from db'
+except InvalidRegistration:
+    print 'Invalid Reg_id'
    
-except GCMUnavailableException:
-    print 'gcm unavailable,resend'
+except NotRegistered:
+    print 'not registered'
 
+except Unavailable :
+    print 'Unavailable'
