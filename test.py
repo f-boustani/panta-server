@@ -8,7 +8,7 @@ reg_id = "APA91bGdwPMNU0rh5ccVuTtfipz_Z7yHhEdSkoA91v6WOzWpbdxLcS7Gkc3IF7qN4jf3rd
 #print response
 try:
     canonical_id = gcm.plaintext_request(registration_id=reg_id, data=data)
-    print 'canonical_id'
+    print canonical_id
     if canonical_id:
     	print 'reg_id change,must replace'
         
