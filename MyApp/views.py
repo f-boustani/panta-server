@@ -1761,7 +1761,7 @@ def check_deadline(request):
 
                 try:
                     canonical_id = gcm.plaintext_request(registration_id=user_reg_id, data=data1)
-                    print canonical_id
+                    print 'id: ',canonical_id
 
                     if canonical_id:    
                         print 'reg_id change,must replace'
@@ -1779,7 +1779,7 @@ def check_deadline(request):
                 gcm = GCM("AIzaSyBJ2eSyVNiT9Xfh-KsvmjjSvoY_rs7VvSA")
                 try:
                     canonical_id = gcm.plaintext_request(registration_id=manager_reg_id, data=data2)
-                    print canonical_id
+                    print 'id2: ',canonical_id
 
                     if canonical_id:    
                         print 'reg_id change,must replace'
