@@ -29,5 +29,7 @@ urlpatterns = patterns('',
     (r'^deleteAccount/$', deleteAccount),
     (r'^gcmDatabase/$', gcmDatabase),
   #  (r'^getNotif/$', getNotif),
-    (r'^signOut/$', signOut)
+    (r'^signOut/$', signOut),
+    (r'^check_deadline/$',check_deadline),
+    (r'^check_end_project/$',check_end_project)
 )
