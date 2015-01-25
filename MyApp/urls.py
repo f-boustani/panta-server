@@ -28,6 +28,6 @@ urlpatterns = patterns('',
     (r'^changePassword/$', changePassword),
     (r'^deleteAccount/$', deleteAccount),
     (r'^gcmDatabase/$', gcmDatabase),
-    (r'^getNotif/$', getNotif),
+  #  (r'^getNotif/$', getNotif),
     (r'^signOut/$', signOut)
 )
