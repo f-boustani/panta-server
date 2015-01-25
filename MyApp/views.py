@@ -583,11 +583,27 @@ def addMember(request):
 				
 
 				#add api key
-				gcm = GCM("AIzaSyCWZBvIjLg0kmBELKsObqostZHx2AZWCvQ")
+				gcm = GCM("AIzaSyBJ2eSyVNiT9Xfh-KsvmjjSvoY_rs7VvSA")
 				reg_id = user_reg_id
 
-				gcm.plaintext_request(registration_id=reg_id, data=data)
-				print 'notif sent'
+				try:
+				    canonical_id = gcm.plaintext_request(registration_id=reg_id, data=data)
+				    print canonical_id
+				    if canonical_id:
+				    	
+				    	print 'reg_id change,must replace'
+				        
+				        for entry in Gcm_users.objects.filter(registration_id=reg_id):
+				        	entry.reg_id = canonical_id
+				        	entry.save()
+
+				except GCMNotRegisteredException:
+				    print 'notregistered,Remove from db'
+				    for entry in Gcm_users.objects.filter(registration_id=reg_id):
+				       entry.delete()
+				       
+				except GCMUnavailableException:
+				    print 'gcm unavailable,resend'
 
 				
 			print json.dumps(results)
@@ -810,11 +826,27 @@ def addTask(request):
 				user_reg_id=obj.reg_id
 				
 				#add api key
-				gcm = GCM("AIzaSyCWZBvIjLg0kmBELKsObqostZHx2AZWCvQ")
+				gcm = GCM("AIzaSyBJ2eSyVNiT9Xfh-KsvmjjSvoY_rs7VvSA")
 				reg_id = user_reg_id
 
-				gcm.plaintext_request(registration_id=reg_id, data=data)
-				print 'notif sent'
+				try:
+				    canonical_id = gcm.plaintext_request(registration_id=reg_id, data=data)
+				    print canonical_id
+				    if canonical_id:
+				    	
+				    	print 'reg_id change,must replace'
+				        
+				        for entry in Gcm_users.objects.filter(registration_id=reg_id):
+				        	entry.reg_id = canonical_id
+				        	entry.save()
+
+				except GCMNotRegisteredException:
+				    print 'notregistered,Remove from db'
+				    for entry in Gcm_users.objects.filter(registration_id=reg_id):
+				       entry.delete()
+				       
+				except GCMUnavailableException:
+				    print 'gcm unavailable,resend'
 
 
 			
@@ -1253,18 +1285,27 @@ def changeStatus(request):
 				
 
 				#add api key
-				gcm = GCM("AIzaSyCWZBvIjLg0kmBELKsObqostZHx2AZWCvQ")
+				gcm = GCM("AIzaSyBJ2eSyVNiT9Xfh-KsvmjjSvoY_rs7VvSA")
 				reg_id = manager_reg_id
 
-				a=gcm.plaintext_request(registration_id=reg_id, data=data)
-				print 'notif sent'
-				print 'response',a
+				try:
+				    canonical_id = gcm.plaintext_request(registration_id=reg_id, data=data)
+				    print canonical_id
+				    if canonical_id:
+				    	
+				    	print 'reg_id change,must replace'
+				        
+				        for entry in Gcm_users.objects.filter(registration_id=reg_id):
+				        	entry.reg_id = canonical_id
+				        	entry.save()
 
-				if(a!=None):
-					print 'reg_id changed!!'
-					user_reg=Gcm_users.objects.get(username__iexact=manager_user,reg_id__iexact=reg_id)
-					user_reg.reg_id=a
-					user_reg.save()
+				except GCMNotRegisteredException:
+				    print 'notregistered,Remove from db'
+				    for entry in Gcm_users.objects.filter(registration_id=reg_id):
+				       entry.delete()
+				       
+				except GCMUnavailableException:
+				    print 'gcm unavailable,resend'
 
 				
 
