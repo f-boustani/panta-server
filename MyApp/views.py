@@ -1769,15 +1769,6 @@ def check_deadline(request):
 						for entry in Gcm_users.objects.filter(registration_id=user_reg_id):
 							entry.reg_id = canonical_id
 							entry.save()
-				'''
-				except GCMNotRegisteredException:
-					print 'notregistered,Remove from db'
-					for entry in Gcm_users.objects.filter(registration_id=user_reg_id):
-						entry.delete()
-				       
-				except GCMUnavailableException:
-					print 'gcm unavailable,resend'
-				'''
 
 
 			for obj in Gcm_users.objects.filter(username__iexact=manager):
@@ -1797,15 +1788,6 @@ def check_deadline(request):
 							entry.reg_id = canonical_id
 							entry.save()
 
-				'''
-				except GCMNotRegisteredException:
-					print 'notregistered,Remove from db'
-					for entry in Gcm_users.objects.filter(registration_id=manager_reg_id):
-						entry.delete()
-				       
-				except GCMUnavailableException:
-					print 'gcm unavailable,resend'
-				'''
 
 	results ={}
 	results["successful"]="true"
@@ -1846,16 +1828,7 @@ def check_end_project():
 								entry.reg_id = canonical_id
 								entry.save()
 
-					'''
-					except GCMNotRegisteredException:
-						print 'notregistered,Remove from db'
-						for entry in Gcm_users.objects.filter(registration_id=user_regID):
-							entry.delete()
-					       
-					except GCMUnavailableException:
-						print 'gcm unavailable,resend'
-					'''
-					
+
 	results ={}
 	results["successful"]="true"
 	print json.dumps(results)
