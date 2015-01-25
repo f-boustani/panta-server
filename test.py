@@ -2,7 +2,7 @@ from gcm import *
 message=' it works :D'
 gcm = GCM("AIzaSyBJ2eSyVNiT9Xfh-KsvmjjSvoY_rs7VvSA")
 data = {'the_message': message}
-reg_id = "APA91bF6SCQRJ_d8g7-A6o5c9PZsBtOo0TYxPgejM_4P3ByZJyJd2KOEvZTYo0l7BWoO8BBp4lPR-1hNRo6SHZ_M4hAg5jaya3ja5IrU-01uIuslD40X_ZcWvUSLyXElXckCCT2mw-Zvrs-goH2273A6l4dQlLdOHQ"
+reg_id = "APA91bG5kogBn7hWgFzOk9wsTEKDIP_t2SVql4Zie9oICAUe5lGihlBhpCjexfLAayz9HHJnENGNdmN5SL9hX4LP35gUVDR3QUF_IoPH_HNzJ0kwOCTKA3l-7Tl9PHd7CqMvDrbOvL0NmgLfzkiui8vjsL24t4KFvg"
 
 try:
     canonical_id = gcm.plaintext_request(registration_id=reg_id, data=data)
@@ -11,17 +11,31 @@ try:
     	print 'reg_id change,must replace'
         
        
-except 'InvalidRegistration':
+except InvalidRegistration:
     print 'Invalid Reg_id'
    
-except 'NotRegistered':
-    print 'not registered'
+except NotRegistered:
+    print not registered
 
-except 'Unavailable' :
+except Unavailable :
     print 'Unavailable'
 
-except 'MismatchSenderId' :
+except MismatchSenderId :
     print 'Unavailable'
+
+
+class InvalidRegistration(Exception):
+	pass
+
+class MismatchSenderId(Exception):
+	pass
+	
+class Unavailable(Exception):
+	pass
+
+class NotRegistered(Exception):
+	pass
+		
 
 
     
