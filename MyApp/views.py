@@ -568,7 +568,7 @@ def addMember(request):
 
 			print "must send notif"
 			pro_name=Projects.objects.get(id__exact=projectID).projectName
-			message='you are added to project '+ pro_name
+			message=pro_name
 
 			#save notif to notification table
 			new_notif=Notification(username=username,msg=message)
@@ -804,7 +804,7 @@ def addTask(request):
 			
 			print "must send notif"
 			pro_name=Projects.objects.get(id__exact=projectID).projectName
-			message='A task is given to you in project '+ pro_name
+			message=pro_name
 			del task["taskName"]
 			del task["task_info"]
 			del task["deadline"]
@@ -1264,7 +1264,7 @@ def changeStatus(request):
 			user_id=Task.objects.get(id__exact=taskID).username
 			name=Login.objects.get(username__iexact=user_id).name
 
-			message=name+' done his/her task'
+			message=name
 			task_info=Task.objects.get(id__iexact=taskID)
 			task_info.deadline=str(task_info.deadline)
 			task_info=task_info.as_json()
@@ -1303,7 +1303,7 @@ def changeStatus(request):
 				    print 'notregistered,Remove from db'
 				    for entry in Gcm_users.objects.filter(registration_id=reg_id):
 				       entry.delete()
-				       
+
 				except GCMUnavailableException:
 				    print 'gcm unavailable,resend'
 
