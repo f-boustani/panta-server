@@ -13,7 +13,7 @@ class Gcm_users(models.Model):
     username = models.EmailField(max_length=70)
     reg_id = models.TextField()
     #class Meta:
-     #   unique_together = ('username','reg_id',)
+     #  unique_together = ('username','reg_id',)
         #managed=False
     
 
@@ -21,8 +21,8 @@ class Notification(models.Model):
 
     username = models.EmailField(max_length=70)
     msg = models.CharField(max_length=200)
-    #class Meta:
-        #managed=False
+    class Meta:
+        managed=False
     def as_json(self):
             return dict(
                 username=self.username,
