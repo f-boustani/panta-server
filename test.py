@@ -11,11 +11,11 @@ try:
     	print 'reg_id change,must replace'
         
        
-except InvalidRegistration:
+except 'InvalidRegistration':
     print 'Invalid Reg_id'
    
-except NotRegistered:
+except 'NotRegistered':
     print 'not registered'
 
-except Unavailable :
+except 'Unavailable' :
     print 'Unavailable'
