@@ -183,9 +183,18 @@ def view_profile(request):
 			
 			temp["tasks"]=task
 			lst.append(temp)
-			
-			
 		results["projects"]=lst
+		
+		#get Notifications
+		notif=[]
+		for obj in Notification.objects.filter(username__iexact=username):
+			
+			obj=obj.as_json()
+			notif.append(obj)
+
+
+		results["notification"]=notif
+			
 		results["username"]=username
 		#print json.dumps(results)
 		response = HttpResponse(json.dumps(results), content_type="application/json")
@@ -1652,6 +1661,7 @@ def signOut(request):
 		return HttpResponseBadRequest()
 
 
+'''
 def getNotif(request):
 
 	print "-------------------------------------------"
@@ -1710,3 +1720,4 @@ def getNotif(request):
 
 	else:
 		return HttpResponseBadRequest()
+'''
