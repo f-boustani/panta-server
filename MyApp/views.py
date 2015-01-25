@@ -1769,8 +1769,6 @@ def check_deadline(request):
 						for entry in Gcm_users.objects.filter(registration_id=user_reg_id):
 							entry.reg_id = canonical_id
 							entry.save()
-
-
 			for obj in Gcm_users.objects.filter(username__iexact=manager):
 	
 				manager_reg_id=obj.reg_id
