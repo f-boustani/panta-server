@@ -606,13 +606,9 @@ def addMember(request):
                             entry.reg_id = canonical_id
                             entry.save()
 
-                except GCMNotRegisteredException:
-                    print 'notregistered,Remove from db'
-                    for entry in Gcm_users.objects.filter(registration_id=reg_id):
-                       entry.delete()
                        
-                except GCMUnavailableException:
-                    print 'gcm unavailable,resend'
+                except:
+                    print 'yes'
 
                 
             print json.dumps(results)
@@ -849,13 +845,9 @@ def addTask(request):
                             entry.reg_id = canonical_id
                             entry.save()
 
-                except GCMNotRegisteredException:
-                    print 'notregistered,Remove from db'
-                    for entry in Gcm_users.objects.filter(registration_id=reg_id):
-                       entry.delete()
                        
-                except GCMUnavailableException:
-                    print 'gcm unavailable,resend'
+                except :
+                    print 'yes'
 
 
             
@@ -1308,13 +1300,8 @@ def changeStatus(request):
                             entry.reg_id = canonical_id
                             entry.save()
 
-                except GCMNotRegisteredException:
-                    print 'notregistered,Remove from db'
-                    for entry in Gcm_users.objects.filter(registration_id=reg_id):
-                       entry.delete()
-
-                except GCMUnavailableException:
-                    print 'gcm unavailable,resend'
+                except :
+                    print 'yes'
 
                 
 
