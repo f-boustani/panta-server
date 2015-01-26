@@ -44,7 +44,7 @@ class Login(models.Model):
     password = models.CharField(max_length=100)
     name = models.CharField(max_length=50)
 
-    class Meta:
+    #class Meta:
         #managed=False    
 
     def as_json(self):
