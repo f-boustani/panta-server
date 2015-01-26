@@ -484,7 +484,7 @@ def taskInfo(request):
     if request.method == "POST":
         print 'POST-taskInfo'
         taskID=int(unicodedata.normalize('NFKD', request.POST['taskID']).encode('utf-8','ignore'));
-        
+        print taskID        
         results ={}
         proID=Task.objects.get(id__exact=taskID).projectID
         lst=[]
