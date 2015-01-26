@@ -1831,7 +1831,7 @@ def check_end_project(request):
                     gcm = GCM("AIzaSyBJ2eSyVNiT9Xfh-KsvmjjSvoY_rs7VvSA")
                     try:
                         canonical_id = gcm.plaintext_request(registration_id=user_regID, data=data)
-#                       print canonical_id
+                        print 'id: ', canonical_id
 
                         if canonical_id:
                             print 'reg_id change,must replace'
