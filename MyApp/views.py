@@ -1750,8 +1750,8 @@ def check_deadline(request):
 
 
 
-            data1={'message':msg1,'msg_type':'5','task_info':task}
-            data2={'message':msg2,'msg_type':'6','task_info':task}
+            data1={'message':msg1,'msg_type':'5'}
+            data2={'message':msg2,'msg_type':'6'}
             
             for obj in Gcm_users.objects.filter(username__iexact=user):
                 user_reg_id=obj.reg_id
