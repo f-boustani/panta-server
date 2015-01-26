@@ -27,7 +27,7 @@ class Notification(models.Model):
     username = models.EmailField(max_length=70)
     message = models.CharField(max_length=200)
     msg_type= models.CharField(max_length=1)
-    class Meta:
+#    class Meta:
         #managed=False
     def as_json(self):
             return dict(
