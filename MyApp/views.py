@@ -1760,6 +1760,7 @@ def check_deadline(request):
                 gcm = GCM("AIzaSyBJ2eSyVNiT9Xfh-KsvmjjSvoY_rs7VvSA")
 
                 try:
+                    print 'hereee'
                     print 'user: ',user
                     canonical_id = gcm.plaintext_request(registration_id=user_reg_id, data=data1)
                     print 'id: ',canonical_id
