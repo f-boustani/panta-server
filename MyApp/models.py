@@ -17,9 +17,9 @@ class Gcm_users(models.Model):
 
     username = models.EmailField(max_length=70)
     reg_id = models.TextField()
-    #class Meta:
+    class Meta:
      #  unique_together = ('username','reg_id',)
-        #managed=False
+        managed=False
     
 
 class Notification(models.Model):
@@ -27,12 +27,14 @@ class Notification(models.Model):
     username = models.EmailField(max_length=70)
     message = models.CharField(max_length=200)
     msg_type= models.CharField(max_length=1)
+    data = models.CharField(max_length=200 , null=True,blank=True)
 #    class Meta:
         #managed=False
     def as_json(self):
             return dict(
                 username=self.username,
                 message=self.message,
+                data=self.data,
                 msg_type=self.msg_type)
                 
     
@@ -44,8 +46,8 @@ class Login(models.Model):
     password = models.CharField(max_length=100)
     name = models.CharField(max_length=50)
 
-    #class Meta:
-        #managed=False    
+    class Meta:
+        managed=False    
 
     def as_json(self):
             return dict(
@@ -60,7 +62,7 @@ class Profile(models.Model):
 
     class Meta:
         unique_together = ('username','projectID')
-       # managed=False
+        managed=False
 
     def as_json(self):
             return dict(
@@ -78,8 +80,8 @@ class Projects(models.Model):
     link = models.TextField(null=True, blank=True)
     notif = models.CharField(max_length=1, choices=notif_CHOICES)
 
-    #class Meta:
-     #   managed=False   
+    class Meta:
+        managed=False   
 
     def as_json(self):
             return dict(
@@ -106,7 +108,7 @@ class Task(models.Model):
 
     class Meta:
         unique_together = ('id','username')
-       # managed=False
+        managed=False
 
     def as_json(self):
             return dict(

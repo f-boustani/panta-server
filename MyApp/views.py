@@ -689,7 +689,7 @@ def addProject(request):
         newProject=Projects(projectName=projectName,notif='0',pDelta=pDelta, managerUser=username, managerName=managerName, project_info=project_info,progress=0, pDeadline=pDeadline,link=link)
         newProject.save()
         lst=Projects.objects.all().order_by("-id")
-        print lst
+       # print lst
         projectID=lst[0].id
 
         newProfile=Profile(username=username , projectID= projectID)
@@ -1739,11 +1739,11 @@ def check_deadline(request):
             task["managerUser"]=manager
 
             #save notif to notification table
-            new_notif=Notification(username=user,message=msg1, msg_type='5')
+            new_notif=Notification(username=user,message=msg1,data=task["taskName"], msg_type='5')
             new_notif.save()
 
             #save notif to notification table
-            new_notif=Notification(username=manager,message=msg2, msg_type='6')
+            new_notif=Notification(username=manager,message=msg2,data=task["taskName"], msg_type='6')
             new_notif.save()
 
 
