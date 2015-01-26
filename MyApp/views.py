@@ -818,7 +818,7 @@ def addTask(request):
             task["managerUser"]=Projects.objects.get(id__exact=projectID).managerUser
 
             #save notif to notification table
-            new_notif=Notification(username=username,msg=message,msg_type='3')
+            new_notif=Notification(username=username,message=message,msg_type='3')
             new_notif.save()
 
 
