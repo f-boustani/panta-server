@@ -580,7 +580,7 @@ def addMember(request):
             message=pro_name
 
             #save notif to notification table
-            new_notif=Notification(username=username,msg=message)
+            new_notif=Notification(username=username,message=message, msg_type='2')
             new_notif.save()
 
             for obj in Gcm_users.objects.filter(username__iexact=username):
@@ -686,7 +686,7 @@ def addProject(request):
         results ={}
         results["successful"]="true"
 
-        newProject=Projects(projectName=projectName,pDelta=pDelta, managerUser=username, managerName=managerName, project_info=project_info,progress=0, pDeadline=pDeadline,link=link)
+        newProject=Projects(projectName=projectName,notif='0',pDelta=pDelta, managerUser=username, managerName=managerName, project_info=project_info,progress=0, pDeadline=pDeadline,link=link)
         newProject.save()
         lst=Projects.objects.all().order_by("-id")
         print lst
@@ -794,7 +794,7 @@ def addTask(request):
             results["successful"]="true"
 
             
-            newTask=Task(taskName=taskName,task_info=task_info,delta=delta, projectID=projectID,username=username,deadline=deadline,status='0')
+            newTask=Task(taskName=taskName,notif='0',task_info=task_info,delta=delta, projectID=projectID,username=username,deadline=deadline,status='0')
             newTask.save()
             task=Task.objects.latest('id').as_json()
             
@@ -818,7 +818,7 @@ def addTask(request):
             task["managerUser"]=Projects.objects.get(id__exact=projectID).managerUser
 
             #save notif to notification table
-            new_notif=Notification(username=username,msg=message)
+            new_notif=Notification(username=username,msg=message,msg_type='3')
             new_notif.save()
 
 
@@ -1272,7 +1272,7 @@ def changeStatus(request):
             task_info['managerUser']=manager_user
             
             #save notif to notification table
-            new_notif=Notification(username=manager_user,msg=message)
+            new_notif=Notification(username=manager_user,message=message,msg_type='1')
             new_notif.save()
 
 
@@ -1718,9 +1718,11 @@ def check_deadline(request):
 
     for task in Task.objects.all():
 
-        if task.delta <= t_current and task.status=='0':
+        if task.delta <= t_current and task.status=='0' and task.notif=='0':
 
             print "task deadline is over!must send notif"
+            task.notif='1'
+            task.save()
 
             # start sending notif to user
             msg1=Projects.objects.get(id__iexact=task.projectID).projectName
@@ -1735,6 +1737,16 @@ def check_deadline(request):
             del task["status"]
 
             task["managerUser"]=manager
+
+            #save notif to notification table
+            new_notif=Notification(username=user,message=msg1, msg_type='5')
+            new_notif.save()
+
+            #save notif to notification table
+            new_notif=Notification(username=manager,message=msg2, msg_type='6')
+            new_notif.save()
+
+
 
 
             data1={'message':msg1,'msg_type':'5','task_info':task}
@@ -1762,7 +1774,7 @@ def check_deadline(request):
             for obj in Gcm_users.objects.filter(username__iexact=manager):
                 manager_reg_id=obj.reg_id
                 
-#add api key
+                #add api key
                 gcm = GCM("AIzaSyBJ2eSyVNiT9Xfh-KsvmjjSvoY_rs7VvSA")
                 try:
                     canonical_id = gcm.plaintext_request(registration_id=manager_reg_id, data=data2)
@@ -1794,13 +1806,21 @@ def check_end_project(request):
     d_current=(d_current - datetime(1970,1,1)).days
     for pro in Projects.objects.all():
 
-        if pro.pDelta <= d_current:
+        if pro.pDelta <= d_current and pro.notif=='0':
 
             print "project deadline is over! must send notif for pro"
+            pro.notif='1'
+            pro.save()
+
             msg=pro.projectName
             data={'message':msg,'msg_type':'4'}
 
             for f in Profile.objects.filter(projectID__iexact=pro.id):
+
+                #save notif to notification table
+                new_notif=Notification(username=f.username,message=msg, msg_type='4')
+                new_notif.save()
+
                 for rec in Gcm_users.objects.filter(username__iexact=f.username):
                     user_regID=rec.reg_id
                 

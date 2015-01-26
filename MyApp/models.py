@@ -8,6 +8,11 @@ task_CHOICES =(
     ('2','accept by manager'),
 )
 
+notif_CHOICES =(
+    ('0','not sent'),
+    ('1','sent'),
+)
+
 class Gcm_users(models.Model):
 
     username = models.EmailField(max_length=70)
@@ -20,13 +25,15 @@ class Gcm_users(models.Model):
 class Notification(models.Model):
 
     username = models.EmailField(max_length=70)
-    msg = models.CharField(max_length=200)
+    message = models.CharField(max_length=200)
+    msg_type= models.CharField(max_length=1)
     class Meta:
-        managed=False
+        #managed=False
     def as_json(self):
             return dict(
                 username=self.username,
-                msg=self.msg)
+                message=self.message,
+                msg_type=self.msg_type)
                 
     
 
@@ -38,7 +45,7 @@ class Login(models.Model):
     name = models.CharField(max_length=50)
 
     class Meta:
-        managed=False    
+        #managed=False    
 
     def as_json(self):
             return dict(
@@ -53,7 +60,7 @@ class Profile(models.Model):
 
     class Meta:
         unique_together = ('username','projectID')
-        managed=False
+       # managed=False
 
     def as_json(self):
             return dict(
@@ -69,9 +76,10 @@ class Projects(models.Model):
     pDeadline = models.DateField()
     pDelta = models.IntegerField(max_length=15)
     link = models.TextField(null=True, blank=True)
+    notif = models.CharField(max_length=1, choices=notif_CHOICES)
 
-    class Meta:
-        managed=False   
+    #class Meta:
+     #   managed=False   
 
     def as_json(self):
             return dict(
@@ -94,10 +102,11 @@ class Task(models.Model):
     deadline = models.DateTimeField(null=True)
     status = models.CharField(max_length=1, choices=task_CHOICES)
     delta = models.IntegerField(max_length=15)
+    notif = models.CharField(max_length=1, choices=notif_CHOICES)
 
     class Meta:
         unique_together = ('id','username')
-        managed=False
+       # managed=False
 
     def as_json(self):
             return dict(
@@ -108,25 +117,5 @@ class Task(models.Model):
                 deadline=self.deadline,
                 projectID=self.projectID,
                 status=self.status)
-
-
-class User_father(models.Model):
-    username = models.EmailField()
-    projectID = models.IntegerField(max_length=15)
-    father = models.EmailField()
-    position = models.CharField(max_length=50)
-    deadline = models.DateTimeField(null=True)
-
-    class Meta:
-        managed=False   
-    
-    def as_json(self):
-            return dict(
-                projectID=self.projectID,
-                father=self.father,
-                username=self.username,
-                position=self.position,
-                deadline=self.deadline)
-
 
 
