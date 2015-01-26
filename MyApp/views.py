@@ -1749,7 +1749,7 @@ def check_deadline(request):
 
 
 
-
+            print json.dumps(task)
             data1={'message':msg1,'msg_type':'5','task_info':json.dumps(task)}
             data2={'message':msg2,'msg_type':'6','task_info':json.dumps(task)}
             
