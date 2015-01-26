@@ -10,7 +10,7 @@ import urllib2
 def task_deadline():
 
 	urllib2.urlopen('http://127.0.0.1:8800/check_deadline')
-	t = threading.Timer(600.0, task_deadline)
+	t = threading.Timer(300.0, task_deadline)
 	t.start()  
 	
 #********************************************************************
