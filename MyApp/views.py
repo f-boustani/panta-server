@@ -1759,7 +1759,7 @@ def check_deadline(request):
                 #add api key
                 gcm = GCM("AIzaSyBJ2eSyVNiT9Xfh-KsvmjjSvoY_rs7VvSA")
                 print 'user:', user
-                gcm.plaintext_request(registration_id=user_reg_id, data=data1)
+                gcm.plaintext_request(registration_id=user_reg_id, data=json.dumps(data1))
 
 
             for obj in Gcm_users.objects.filter(username__iexact=manager):
@@ -1768,7 +1768,7 @@ def check_deadline(request):
                 #add api key
                 gcm = GCM("AIzaSyBJ2eSyVNiT9Xfh-KsvmjjSvoY_rs7VvSA")
                 print 'manager: ',manager
-                gcm.plaintext_request(registration_id=manager_reg_id, data=data2)
+                gcm.plaintext_request(registration_id=manager_reg_id, data=json.dumps(data2))
 
                 
     results ={}
