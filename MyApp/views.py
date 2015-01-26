@@ -1758,42 +1758,19 @@ def check_deadline(request):
                 
                 #add api key
                 gcm = GCM("AIzaSyBJ2eSyVNiT9Xfh-KsvmjjSvoY_rs7VvSA")
+                print 'user:', user
+                gcm.plaintext_request(registration_id=user_reg_id, data=data1)
 
-                try:
-                    print 'hereee'
-                    print 'user: ',user
-                    canonical_id = gcm.plaintext_request(registration_id=user_reg_id, data=data1)
-                    print 'id: ',canonical_id
-
-                    if canonical_id:    
-                        print 'reg_id change,must replace'
-                        
-                        for entry in Gcm_users.objects.filter(registration_id=user_reg_id):
-                            entry.reg_id = canonical_id
-                            entry.save()
-                except:
-                    print 'yes,user'
 
             for obj in Gcm_users.objects.filter(username__iexact=manager):
                 manager_reg_id=obj.reg_id
                 
                 #add api key
                 gcm = GCM("AIzaSyBJ2eSyVNiT9Xfh-KsvmjjSvoY_rs7VvSA")
-                try:
-                    print 'manager: ',manager
-                    canonical_id = gcm.plaintext_request(registration_id=manager_reg_id, data=data2)
-                    print 'id2: ',canonical_id
+                print 'manager: ',manager
+                gcm.plaintext_request(registration_id=manager_reg_id, data=data2)
 
-                    if canonical_id:    
-                        print 'reg_id change,must replace'
-                        
-                        for entry in Gcm_users.objects.filter(registration_id=manager_reg_id):
-                            entry.reg_id = canonical_id
-                            entry.save()
-                except:
-                    print 'yes,manager'
-
-
+                
     results ={}
     results["successful"]="true"
     print json.dumps(results)
